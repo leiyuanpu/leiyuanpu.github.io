@@ -220,6 +220,120 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/08/13/window自动开启redis服务/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LYP">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不知名的程序员">
+    </span>
+      <header class="post-header">
+
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/08/13/window自动开启redis服务/" class="post-title-link" itemprop="url">window自动开启redis服务</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-13 17:41:07 / 修改时间：17:42:05" itemprop="dateCreated datePublished" datetime="2019-08-13T17:41:07+08:00">2019-08-13</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          <br>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+            <p>1，检查服务是否开启</p>
+<pre><code>位置：控制面板\所有控制面板项\管理工具\服务
+</code></pre><p> <img src="https://upload-images.jianshu.io/upload_images/8578697-5696b44cad825df3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="redis-no.png"></p>
+<p>如果没有发现redis则代表 redis服务没有开启。</p>
+<p>2，开启redis服务</p>
+<pre><code>redis-server --service-install redis.windows-service.conf --loglevel verbose
+</code></pre><p><img src="https://upload-images.jianshu.io/upload_images/8578697-8126aad0115f1d52.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="kaiqi.jpg"></p>
+<p>3，查看服务是否开启成功<br><img src="https://upload-images.jianshu.io/upload_images/8578697-e39d383f0a83287c.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="c.jpg"></p>
+<p>大功告成。</p>
+<p>常用命令：</p>
+<pre><code>卸载服务：redis-server --service-uninstall
+
+开启服务：redis-server --service-start
+
+停止服务：redis-server --service-stop
+</code></pre><p>参考：<a href="https://blog.csdn.net/blick__winkel/article/details/77986481" target="_blank" rel="noopener">https://blog.csdn.net/blick__winkel/article/details/77986481</a></p>
+
+          
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/08/13/POSTMAN传递X-XSRF-TOKEN问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -712,7 +826,7 @@ hexo help 会列出所有的命令
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -733,7 +847,9 @@ hexo help 会列出所有的命令
         
           
         
-        <span class="site-state-item-count">3</span>
+          
+        
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>
@@ -756,7 +872,9 @@ hexo help 会列出所有的命令
         
           
         
-        <span class="site-state-item-count">4</span>
+          
+        
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
