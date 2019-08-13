@@ -57,19 +57,19 @@
   };
 </script>
 
-  <meta name="description" content="###一，Hexo安装:  1.1，在命令行中通过 npm 来安装 Hexo： npm install -g hexo-cli -g 表示全局安装，会将 Hexo 命令加入环境变量中，以使其在 cmd 下有效。 Hexo 依赖于 [Node.js](https://nodejs.org/zh-cn/) 和 [git](https://git-scm.com/download/)，所以在安装 Hex">
-<meta name="keywords" content="hexo">
+  <meta name="description" content="12php正常的一个输出过高需要经历的阶段：echo/print -&amp;gt; php buffer -&amp;gt; tcp buffer -&amp;gt; browser 一，buffer —- flush() buffer是一个内存地址空间,Linux系统默认大小一般为4096(1kb),即一个内存页。主要用于存储速度不同步的设备或者优先级不同的 设备之间传办理数据的区域。通过buffer，可以使进程这间">
+<meta name="keywords" content="PHP">
 <meta property="og:type" content="article">
-<meta property="og:title" content="hexo+gitPage简单的搭建实战">
-<meta property="og:url" content="https://leiyuanpu.github.io/2019/08/02/hexo-gitPage简单的搭建实战/index.html">
+<meta property="og:title" content="关于PHP的flush和ob_flush的机制测试">
+<meta property="og:url" content="https://leiyuanpu.github.io/2019/08/13/关于PHP的flush和ob-flush的机制测试/index.html">
 <meta property="og:site_name" content="不知名的程序员">
-<meta property="og:description" content="###一，Hexo安装:  1.1，在命令行中通过 npm 来安装 Hexo： npm install -g hexo-cli -g 表示全局安装，会将 Hexo 命令加入环境变量中，以使其在 cmd 下有效。 Hexo 依赖于 [Node.js](https://nodejs.org/zh-cn/) 和 [git](https://git-scm.com/download/)，所以在安装 Hex">
+<meta property="og:description" content="12php正常的一个输出过高需要经历的阶段：echo/print -&amp;gt; php buffer -&amp;gt; tcp buffer -&amp;gt; browser 一，buffer —- flush() buffer是一个内存地址空间,Linux系统默认大小一般为4096(1kb),即一个内存页。主要用于存储速度不同步的设备或者优先级不同的 设备之间传办理数据的区域。通过buffer，可以使进程这间">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-02T10:49:38.240Z">
+<meta property="og:updated_time" content="2019-08-13T09:33:31.949Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="hexo+gitPage简单的搭建实战">
-<meta name="twitter:description" content="###一，Hexo安装:  1.1，在命令行中通过 npm 来安装 Hexo： npm install -g hexo-cli -g 表示全局安装，会将 Hexo 命令加入环境变量中，以使其在 cmd 下有效。 Hexo 依赖于 [Node.js](https://nodejs.org/zh-cn/) 和 [git](https://git-scm.com/download/)，所以在安装 Hex">
-  <link rel="canonical" href="https://leiyuanpu.github.io/2019/08/02/hexo-gitPage简单的搭建实战/">
+<meta name="twitter:title" content="关于PHP的flush和ob_flush的机制测试">
+<meta name="twitter:description" content="12php正常的一个输出过高需要经历的阶段：echo/print -&amp;gt; php buffer -&amp;gt; tcp buffer -&amp;gt; browser 一，buffer —- flush() buffer是一个内存地址空间,Linux系统默认大小一般为4096(1kb),即一个内存页。主要用于存储速度不同步的设备或者优先级不同的 设备之间传办理数据的区域。通过buffer，可以使进程这间">
+  <link rel="canonical" href="https://leiyuanpu.github.io/2019/08/13/关于PHP的flush和ob-flush的机制测试/">
 
 
 <script id="page.configurations">
@@ -78,7 +78,7 @@
   };
 </script>
 
-  <title>hexo+gitPage简单的搭建实战 | 不知名的程序员</title>
+  <title>关于PHP的flush和ob_flush的机制测试 | 不知名的程序员</title>
   
 
 
@@ -226,7 +226,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/08/02/hexo-gitPage简单的搭建实战/">
+    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/08/13/关于PHP的flush和ob-flush的机制测试/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LYP">
@@ -240,7 +240,7 @@
       <header class="post-header">
 
         
-          <h1 class="post-title" itemprop="name headline">hexo+gitPage简单的搭建实战
+          <h1 class="post-title" itemprop="name headline">关于PHP的flush和ob_flush的机制测试
 
               
             
@@ -260,12 +260,27 @@
                 
               
 
-              <time title="创建时间：2019-08-02 18:44:48 / 修改时间：18:49:38" itemprop="dateCreated datePublished" datetime="2019-08-02T18:44:48+08:00">2019-08-02</time>
+              <time title="创建时间：2019-08-13 17:32:09 / 修改时间：17:33:31" itemprop="dateCreated datePublished" datetime="2019-08-13T17:32:09+08:00">2019-08-13</time>
             </span>
           
             
 
             
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a></span>
+
+                
+                
+              
+            </span>
           
 
           <br>
@@ -279,59 +294,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>###一，Hexo安装:</p>
-<p> 1.1，在命令行中通过 npm 来安装 Hexo：</p>
-<pre><code>npm install -g hexo-cli
--g 表示全局安装，会将 Hexo 命令加入环境变量中，以使其在 cmd 下有效。
-Hexo 依赖于 [Node.js](https://nodejs.org/zh-cn/) 和 [git](https://git-scm.com/download/)，所以在安装 Hexo 之前先确保已安装了这两项应用。
-</code></pre><p>1.2，根目录下执行初始化命令：</p>
-<pre><code>hexo init
-</code></pre><p>1.3，执行完毕：</p>
-<pre><code>  .
-├── node_modules       //依赖安装目录
-├── scaffolds          //模板文件夹，新建的文章将会从此目录下的文件中继承格式
-|   ├── draft.md         //草稿模板
-|   ├── page.md          //页面模板
-|   └── post.md          //文章模板
-├── source             //资源文件夹，用于放置图片、数据、文章等资源
-|   └── _posts           //文章目录
-├── themes             //主题文件夹
-|   └── landscape        //默认主题
-├── .gitignore         //指定不纳入git版本控制的文件
-├── _config.yml        //站点配置文件
-├── db.json            
-├── package.json
-└── package-lock.json
-</code></pre><p>1.4，开启服务：</p>
-<pre><code>hexo server
-hexo 服务器默认监听 4000 端口，用户可在浏览器中通过地址 localhost:4000 访问博客。
-</code></pre><p>1.5，浏览器访问</p>
-<pre><code>localhost:4000
-会将网站正常加载出来
-</code></pre><p>###二，gitpage页面搭建</p>
-<p>2.1，创建一个项目例如</p>
-<pre><code>leiyuanpu.github.io  //库名为自己的账号，等会这个就是我们访问的连接
-</code></pre><p>2.2，点击项目的setting-&gt;设置GitHub Pages</p>
-<pre><code>选项1：Source  //将master设置为站点的分支
-选项2：Theme Chooser  //选择主题 
-</code></pre><p>2.3，浏览器访问</p>
-<pre><code>如以上没有报错直接访问：leiyuanpu.github.io将会显示出一个完整的页面出来。
-</code></pre><p>###三，建hexo部署到git<br>3.1 将hexo部署到git,并通过gitpage页面展示出来</p>
-<pre><code>在hexo项目里安装
-npm install hexo-deployer-git --save
-</code></pre><p>3.2 在根目录的_config.yml中设置：</p>
-<pre><code>deploy:
-    type: git
-    repo: git@github.com:leiyuanpu/leiyuanpu.github.io.git  //ssh模式
-    branch : master //master分支
-</code></pre><p>3.3 设置免密码推送参考<br>     <a href="https://www.jianshu.com/writer#/notebooks/21583544/notes/43946245/preview" target="_blank" rel="noopener">https://www.jianshu.com/writer#/notebooks/21583544/notes/43946245/preview</a></p>
-<p>3.4 基础命令</p>
-<pre><code>hexo  clean  清除快取档案( db.json)和已产生的静态档案( public)。
-hexo  generate 产生静态档案。
-hexo  deploy  部署网站。
-hexo help 会列出所有的命令
-</code></pre><p>自己搭的效果示例：<a href="https://leiyuanpu.github.io/">https://leiyuanpu.github.io/</a></p>
-<p>参考博客：<br><a href="http://yearito.cn/" target="_blank" rel="noopener">http://yearito.cn</a><br><a href="https://linlif.github.io/" target="_blank" rel="noopener">https://linlif.github.io/</a></p>
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">php正常的一个输出过高需要经历的阶段：</span><br><span class="line">echo/print -&gt; php buffer -&gt; tcp buffer -&gt; browser</span><br></pre></td></tr></table></figure>
+<p>一，buffer —- flush()</p>
+<p>buffer是一个内存地址空间,Linux系统默认大小一般为4096(1kb),即一个内存页。主要用于存储速度不同步的设备或者优先级不同的 设备之间传办理数据的区域。通过buffer，可以使进程这间的相互等待变少。这里说一个通俗一点的例子，你打开文本编辑器编辑一个文件的时候，你每输入 一个字符，操作系统并不会立即把这个字符直接写入到磁盘，而是先写入到buffer，当写满了一个buffer的时候，才会把buffer中的数据写入磁 盘，当然当调用内核函数flush()的时候，强制要求把buffer中的脏数据写回磁盘。<br>同样的道理，当执行echo,print的时候，输出并没有立即通过tcp传给客户端浏览器显示, 而是将数据写入php buffer。php output_buffering机制，意味在tcp buffer之前，建立了一新的队列，数据必须经过该队列。当一个php buffer写满的时候，脚本进程会将php buffer中的输出数据交给系统内核交由tcp传给浏览器显示。</p>
+<p>二，php output_buffering — ob_flush()</p>
+<p>默认情况下，php buffer是开启的，而且该buffer默认值是4096，即1kb。你可以通过在php.ini配置文件中找到output_buffering配置.当echo,print等输出用户数据的时候，输出数据都会写入到php output_buffering中，直到output_buffering写满，会将这些数据通过tcp传送给浏览器显示。你也可以通过 ob_start()手动激活php output_buffering机制，使得即便输出超过了1kb数据，也不真的把数据交给tcp传给浏览器，因为ob_start()将php buffer空间设置到了足够大 。只有直到脚本结束，或者调用ob_end_flush函数，才会把数据发送给客户端浏览器。</p>
+<p>这两个函数的使用怕是很多人最迷惑的一个问题，手册上对两个函数的解释也语焉不详，没有明确的指出它们的区别，似乎二者的功能都是刷新输出缓存。但在我们文章一开始的代码中如果讲fush()替换成ob_flush()，程序就再不能正确执行了。显然，它们是有区别的，否则也手册中直接说明其中一个是另外一个函数的别名即可了，没必要分别说明。那么它们的区别到底是什么呢？</p>
+<p>在没有开启缓存时，脚本输出的内容都在服务器端处于等待输出的状态 ，flush()可以将等待输出的内容立即发送到客户端。</p>
+<p>开启缓存后，脚本输出的内容存入了输出缓存中 ，这时没有处于等待输出状态的内容，你直接使用flush()不会向客户端发出任何内容。而 ob_flush()的作用就是将本来存在输出缓存中的内容取出来，设置为等待输出状态，但不会直接发送到客户端 ，这时你就需要先使用 ob_flush()再使用flush()，客户端才能立即获得脚本的输出。</p>
+<p>三，测试<br>3.1，output_buffering=4096，输出较少的数据（少于一个buffer）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">for($i=0; $i&lt;10; $i++)&#123;</span><br><span class="line">    echo $i.&apos;&lt;br&gt;&apos;;</span><br><span class="line">    sleep(1);</span><br><span class="line">&#125;</span><br><span class="line">运行结果：等所有脚本全部运行完成后，才输出，因为数据未满一个buffer的大小。</span><br></pre></td></tr></table></figure></p>
+<p>3.2.output_buffering=4096，输出较少的数据（少于一个buffer），关闭output_buffering，修改php.ini的output_buffering=0<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">for($i=0; $i&lt;10; $i++)&#123;</span><br><span class="line">    echo $i.str_repeat(&quot;&amp;nbsp;&quot;,1000).&apos;&lt;br&gt;&apos;; // 为了浏览器能够显示</span><br><span class="line">    flush();</span><br><span class="line">    sleep(1);</span><br><span class="line">&#125;</span><br><span class="line">运行结果：因为禁用了php buffering，不需要等到脚本运行完毕就可以输出，数据没有在php buffer停留，可以看到断断续续间歇性输出。echo -&gt; tcp buffer -&gt;browser</span><br></pre></td></tr></table></figure></p>
+<p>参考博文：<br><a href="https://blog.csdn.net/fdipzone/article/details/10367837" target="_blank" rel="noopener">https://blog.csdn.net/fdipzone/article/details/10367837</a><br><a href="http://www.laruence.com/2010/04/15/1414.html" target="_blank" rel="noopener">http://www.laruence.com/2010/04/15/1414.html</a><br><a href="https://www.cnblogs.com/zhangyuhang3/p/6873502.html" target="_blank" rel="noopener">https://www.cnblogs.com/zhangyuhang3/p/6873502.html</a><br><a href="http://niliu.me/articles/605.html#comment-2983" target="_blank" rel="noopener">http://niliu.me/articles/605.html#comment-2983</a></p>
 
     </div>
 
@@ -343,13 +316,13 @@ hexo help 会列出所有的命令
           
         
         <div class="post-tags">
-            <a href="/tags/hexo/" rel="tag"># hexo</a>
+            <a href="/tags/PHP/" rel="tag"># PHP</a>
           
         </div>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
-              <a href="/2019/03/29/test/" rel="next" title="test111">
-                <i class="fa fa-chevron-left"></i> test111
+              <a href="/2019/08/02/hexo-gitPage简单的搭建实战/" rel="next" title="hexo+gitPage简单的搭建实战">
+                <i class="fa fa-chevron-left"></i> hexo+gitPage简单的搭建实战
               </a>
             
           </div>
@@ -357,10 +330,6 @@ hexo help 会列出所有的命令
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-              <a href="/2019/08/13/关于PHP的flush和ob-flush的机制测试/" rel="prev" title="关于PHP的flush和ob_flush的机制测试">
-                关于PHP的flush和ob_flush的机制测试 <i class="fa fa-chevron-right"></i>
-              </a>
-            
           </div>
         </div>
     </footer>
