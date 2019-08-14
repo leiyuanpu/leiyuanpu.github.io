@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[取出分组后最新的一条数据的坑]]></title>
+    <url>%2F2019%2F08%2F14%2F%E5%8F%96%E5%87%BA%E5%88%86%E7%BB%84%E5%90%8E%E6%9C%80%E6%96%B0%E7%9A%84%E4%B8%80%E6%9D%A1%E6%95%B0%E6%8D%AE%E7%9A%84%E5%9D%91%2F</url>
+    <content type="text"><![CDATA[今天群里有个小伙伴提了个需求说帮写一条取出分组后最新的一条数据的sql:123456789101112一开始我直接就上sql：select * from (select * from a order by a.id desc) t group by id 结果找到的数据老不对，后面查阅资源发现，在mysql5.7后 优化器默认过滤了查询的order by 效果，所以找到的数据不对劲，但是sql变成： select * from (select * from a order by a.id desc limit 9999) t group by id 却又可以了。后来只能用另外一种方法解决了，子查询加inner join 示例：select * from product INNER JOIN (select max(id) max_id from product group by price) as t on t.max_id = product.id order by id desc 最后问题解决~~]]></content>
+      <categories>
+        <category>Mysql</category>
+      </categories>
+      <tags>
+        <tag>Mysql</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[下载文件之Header方式下载]]></title>
     <url>%2F2019%2F08%2F13%2F%E4%B8%8B%E8%BD%BD%E6%96%87%E4%BB%B6%E4%B9%8BHeader%E6%96%B9%E5%BC%8F%E4%B8%8B%E8%BD%BD%2F</url>
     <content type="text"><![CDATA[123456789101112131415161718192021222324252627282930/** * @param string $filePath 文件下载 * * @throws \Exception */public function fileDownload($filePath)&#123; if (file_exists($filePath) == false) &#123; throw new \Exception(&apos;文件不存在&apos;); &#125; $filename = basename($filePath); //获取文件名 header(&quot;Content-type: application/octet-stream&quot;); //告诉浏览器这是一个文件流 //处理中文文件名 $ua = $_SERVER[&quot;HTTP_USER_AGENT&quot;]; $encoded_filename = rawurlencode($filename); if (preg_match(&quot;/MSIE/&quot;, $ua)) &#123; header(&apos;Content-Disposition: attachment; filename=&quot;&apos; . $encoded_filename . &apos;&quot;&apos;); &#125; else &#123; if (preg_match(&quot;/Firefox/&quot;, $ua)) &#123; header(&quot;Content-Disposition: attachment; filename*=\&quot;utf8&apos;&apos;&quot; . $filename . &apos;&quot;&apos;); &#125; else &#123; header(&apos;Content-Disposition: attachment; filename=&quot;&apos; . $filename . &apos;&quot;&apos;); &#125; &#125; readfile($filePath);//将缓冲区的数据写入表格 //让Xsendfile发送文件 /// header(&quot;X-Sendfile: $filePath&quot;);&#125; header头参数详解：https://en.wikipedia.org/wiki/List_of_HTTP_header_fieldsXsendfile和readfile区别：http://www.laruence.com/2012/05/02/2613.html]]></content>
