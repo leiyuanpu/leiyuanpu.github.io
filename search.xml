@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[.gitignore和excludes的区别]]></title>
+    <url>%2F2019%2F08%2F20%2Fgitignore%E5%92%8Cexcludes%E7%9A%84%E5%8C%BA%E5%88%AB%2F</url>
+    <content type="text"><![CDATA[一、关于.gitignore 和 excludes这两个文件的只针对尚未提交到配置库的文件才起作用。而对于已经提交的文件是不起作用的。由此可见，这两个文件的初衷是用于排除不希望上传入库的文件。像编译产生的临时文件等。 但是，我们经常有这样一种情况。有个文件，我们必须入库，大家一起共享，但是呢。每个人本地的配置又是因自己本地的环境而异。这样的话，这个文件就很崩溃了。你要入库，通过.gitignore和excludes都不起作用。每次git status都会提示你修改，你又好上传。 对于这种情况，应该使用下面的命令： git update-index –assume-unchanged FILENAME这样，每个人，从库上取代码后，在自己本地都要执行一下上面的这个命令。这样，以后，你这个文件的修改，git 都会帮你忽略掉。 当然，哪一天，你希望你的修改要提交入库，那你也必须手动修改一下 这个文件的标志位： git update-index –no-assume-unchanged FILENAME]]></content>
+      <categories>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[update方法使用集合]]></title>
     <url>%2F2019%2F08%2F16%2Fupdate%E6%96%B9%E6%B3%95%E4%BD%BF%E7%94%A8%E9%9B%86%E5%90%88%2F</url>
     <content type="text"><![CDATA[update应该是mysql里最常用的sql之一了，在开发过程中总结了以下几种写法 1,简单类型 1234语句结构update table set where示例：update product SET order_count = 2 WHERE id = 1 2,多表类型 1234语句结构update table1,table2 set table1.col = table2.col where 示例：update product as p,`order` as o SET p.id = o.product_id WHERE id = 1 3,子查询类型12345678 语句结构 update table1,(select * from table) a set table1.col = a.col 示例： UPDATE product as p, ( SELECT count( order_id ) AS order_count FROM `order` WHERE product_id = 1 ) AS o SET p.order_count = o.order_count WHEREid = 1]]></content>
