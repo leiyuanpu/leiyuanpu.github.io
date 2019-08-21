@@ -57,28 +57,19 @@
   };
 </script>
 
-  <meta name="description" content="当用PostMan去提交post请求时，laravel(luemn)框架会有XSRF的验证，目的在使用PostMan通过XSRF的验证，用于测试POST的请求。以Laravel为例，Laravel会于回应浏览器的GET请求时将XSRF-TOKEN写在cookie中，因此本篇将示范如何从cookie中取得XSRF-TOKEN并附在POST的头部传递出去 一，安装chrome的扩充功能 PostMan">
-<meta name="keywords" content="PostMan">
+  <meta name="description" content="1.安装apache    1.1[root@localhost ~]# yum install httpd    根据提示，输入Y安装即可成功安装  1.2 systemctl start httpd.service #启动apache systemctl stop httpd.service    #停止apache  systemctl restart httpd.service #重启ap">
+<meta name="keywords" content="Linux">
 <meta property="og:type" content="article">
-<meta property="og:title" content="POSTMAN传递X-XSRF-TOKEN问题">
-<meta property="og:url" content="https://leiyuanpu.github.io/2019/08/13/POSTMAN传递X-XSRF-TOKEN问题/index.html">
+<meta property="og:title" content="centos7简单安装配置Lamp">
+<meta property="og:url" content="https://leiyuanpu.github.io/2019/08/21/centos7简单安装配置Lamp/index.html">
 <meta property="og:site_name" content="不知名的程序员">
-<meta property="og:description" content="当用PostMan去提交post请求时，laravel(luemn)框架会有XSRF的验证，目的在使用PostMan通过XSRF的验证，用于测试POST的请求。以Laravel为例，Laravel会于回应浏览器的GET请求时将XSRF-TOKEN写在cookie中，因此本篇将示范如何从cookie中取得XSRF-TOKEN并附在POST的头部传递出去 一，安装chrome的扩充功能 PostMan">
+<meta property="og:description" content="1.安装apache    1.1[root@localhost ~]# yum install httpd    根据提示，输入Y安装即可成功安装  1.2 systemctl start httpd.service #启动apache systemctl stop httpd.service    #停止apache  systemctl restart httpd.service #重启ap">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8578697-3df756a81b87d401.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8578697-1af5a4a5ae18df59.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8578697-6cfbf99a5a643b3e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8578697-44ab0390b080a562.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8578697-3e80e6d13a4277da.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8578697-a3d0b56d728b74ca.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8578697-77075255ee041e38.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8578697-49d19983fbdd562d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2019-08-13T09:38:25.667Z">
+<meta property="og:updated_time" content="2019-08-21T10:53:07.135Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="POSTMAN传递X-XSRF-TOKEN问题">
-<meta name="twitter:description" content="当用PostMan去提交post请求时，laravel(luemn)框架会有XSRF的验证，目的在使用PostMan通过XSRF的验证，用于测试POST的请求。以Laravel为例，Laravel会于回应浏览器的GET请求时将XSRF-TOKEN写在cookie中，因此本篇将示范如何从cookie中取得XSRF-TOKEN并附在POST的头部传递出去 一，安装chrome的扩充功能 PostMan">
-<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/8578697-3df756a81b87d401.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-  <link rel="canonical" href="https://leiyuanpu.github.io/2019/08/13/POSTMAN传递X-XSRF-TOKEN问题/">
+<meta name="twitter:title" content="centos7简单安装配置Lamp">
+<meta name="twitter:description" content="1.安装apache    1.1[root@localhost ~]# yum install httpd    根据提示，输入Y安装即可成功安装  1.2 systemctl start httpd.service #启动apache systemctl stop httpd.service    #停止apache  systemctl restart httpd.service #重启ap">
+  <link rel="canonical" href="https://leiyuanpu.github.io/2019/08/21/centos7简单安装配置Lamp/">
 
 
 <script id="page.configurations">
@@ -87,7 +78,7 @@
   };
 </script>
 
-  <title>POSTMAN传递X-XSRF-TOKEN问题 | 不知名的程序员</title>
+  <title>centos7简单安装配置Lamp | 不知名的程序员</title>
   
 
 
@@ -235,7 +226,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/08/13/POSTMAN传递X-XSRF-TOKEN问题/">
+    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/08/21/centos7简单安装配置Lamp/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LYP">
@@ -249,7 +240,7 @@
       <header class="post-header">
 
         
-          <h1 class="post-title" itemprop="name headline">POSTMAN传递X-XSRF-TOKEN问题
+          <h1 class="post-title" itemprop="name headline">centos7简单安装配置Lamp
 
               
             
@@ -269,7 +260,7 @@
                 
               
 
-              <time title="创建时间：2019-08-13 17:37:30 / 修改时间：17:38:25" itemprop="dateCreated datePublished" datetime="2019-08-13T17:37:30+08:00">2019-08-13</time>
+              <time title="创建时间：2019-08-21 18:50:09 / 修改时间：18:53:07" itemprop="dateCreated datePublished" datetime="2019-08-21T18:50:09+08:00">2019-08-21</time>
             </span>
           
             
@@ -284,7 +275,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/PostMan/" itemprop="url" rel="index"><span itemprop="name">PostMan</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a></span>
 
                 
                 
@@ -303,20 +294,101 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>当用PostMan去提交post请求时，laravel(luemn)框架会有XSRF的验证，目的在使用PostMan通过XSRF的验证，用于测试POST的请求。以Laravel为例，Laravel会于回应浏览器的GET请求时将XSRF-TOKEN写在cookie中，因此本篇将示范如何从cookie中取得XSRF-TOKEN并附在POST的头部传递出去</p>
-<p>一，安装chrome的扩充功能</p>
-<pre><code>PostMan透过chrome为拦截器(Interceptor)来记录的cookie，因此要先安装PostMan在chrome的扩展。
-</code></pre><p>网址：<a href="https://chrome.google.com/webstore/detail/postman-interceptor/aicmkgpgakddgnaphhhpliifpcfhicfo" target="_blank" rel="noopener">https</a>：<a href="https://chrome.google.com/webstore/detail/postman-interceptor/aicmkgpgakddgnaphhhpliifpcfhicfo" target="_blank" rel="noopener">//chrome.google.com/webstore/detail/postman-interceptor/aicmkgpgakddgnaphhhpliifpcfhicfo</a></p>
-<p>二，在postMan扩展安装好后，新增一个开发环境<br>    2.1 在postMan的右上角有个环境设置的选项<br>    <img src="https://upload-images.jianshu.io/upload_images/8578697-3df756a81b87d401.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="![3.png](https://upload-images.jianshu.io/upload_images/8578697-aa6508f806d89b4a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-"></p>
-<p><img src="https://upload-images.jianshu.io/upload_images/8578697-1af5a4a5ae18df59.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="2.png"><br><img src="https://upload-images.jianshu.io/upload_images/8578697-6cfbf99a5a643b3e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="3.png"></p>
-<p>三，设置完之后选择刚刚建立的环境，然后执行一个get请求获取cookie<br><img src="https://upload-images.jianshu.io/upload_images/8578697-44ab0390b080a562.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="5.png"></p>
-<p>3.1,把这段代码放入tests里</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pm.environment.set(</span><br><span class="line">    &quot;XSRF-TOKEN&quot;, </span><br><span class="line">    decodeURIComponent(pm.cookies.get(&quot;XSRF-TOKEN&quot;))</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p><img src="https://upload-images.jianshu.io/upload_images/8578697-3e80e6d13a4277da.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="6.png"></p>
-<p>3.2，执行一个get请求查看下刚刚设置的环境，这是会有以下效果<br><img src="https://upload-images.jianshu.io/upload_images/8578697-a3d0b56d728b74ca.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="7.png"></p>
-<p>3.3设置X-XSRF-TOKEN<br><img src="https://upload-images.jianshu.io/upload_images/8578697-77075255ee041e38.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="8.png"></p>
-<p>3.4，执行一个post请求，完美执行成功<br><img src="https://upload-images.jianshu.io/upload_images/8578697-49d19983fbdd562d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="9.png"></p>
+        <p>1.安装apache</p>
+<p>   1.1[root@localhost ~]# yum install httpd</p>
+<p>   根据提示，输入Y安装即可成功安装</p>
+<p> 1.2 systemctl start httpd.service #启动apache</p>
+<pre><code>systemctl stop httpd.service    #停止apache
+
+systemctl restart httpd.service #重启apache
+
+systemctl enable httpd.service  #设置apache开机启动
+</code></pre><p>centos7修改具体的apache配置 在etc/httpd/conf/httpd.conf目录下，</p>
+<p>2.安装mariadb（MySQL）操作和mysql一样</p>
+<pre><code> yum install mariadb mariadb-server  #安装mariadb
+
+询问是否要安装，输入Y即可自动安装,直到安装完成
+
+systemctl start mariadb.service #启动MariaDB,
+
+systemctl stop mariadb.service    #停止MariaDB
+
+systemctl restart mariadb.service #重启MariaDB,
+
+systemctl enable mariadb.service  #设置开机启动
+</code></pre><p>3 如果需要安装mysql需要去官网下载</p>
+<pre><code>3.1.下载 wget http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm
+
+3.2.rpm 安装 mysql 相应的 yum源：    rpm -uvh mysql-community-release-el7-5.noarch.rpm
+
+3.3.安装mysql yum install mysql-community-server
+</code></pre><p>   3.4.成功安装之后重启mysql服务 service mysqld restart</p>
+<p>   3.5 mysql -u root -p 进入mysql 默认密码为空</p>
+<p>   3.6 mysql&gt; set password for ‘root’@‘localhost’ = password(‘mypasswd’);</p>
+<pre><code>    mysql&gt; exit  搞定！
+
+  (修改密码时可能会报错：Error (1133): Can’t find any matching row in the user table)
+
+   在mysql命令行中执行 FLUSH PRIVILEGES  //刷新
+
+grant all on *.* to root identified by &apos;root&apos;;  //远程连接语句
+</code></pre><p>4.安装Php（由于yum自带的php包版本过低，可选择删除重新安装）</p>
+<p>   4.1.删除旧版本 yum remove php* php-common</p>
+<p>   4.2.rpm 安装 Php7 相应的 yum源：rpm -Uvh <a href="https://mirror.webtatic.com/yum/el7/webtatic-release.rpm" target="_blank" rel="noopener">https://mirror.webtatic.com/yum/el7/webtatic-release.rpm</a></p>
+<pre><code>提示错误：
+
+error: Failed dependencies:
+
+epel-release &gt;= 7 is needed by webtatic-release-7-3.noarch
+
+需要先安装epel-release。
+
+1.安装epel-release
+
+通过命令：
+
+yum -y install epel-release
+
+成功安装。
+</code></pre><p>   4.3.安装phpyum install php70w</p>
+<p>  4.4.重启apache systemctl restart httpd.service</p>
+<p>  4.5.写一个php文件 vi /var/www/html/info.php  </p>
+<p>  4.6 输入本机IP/info.php，显示phpinfo信息，至此apache，php OK了</p>
+<p>php常用模块（php70w-fpm nginx解析php的容器）这里安装了 后面安装nignx时  直接调用就可以了</p>
+<p>yum -y install php70w-devel php70w.x86_64php70w-cli.x86_64php70w-common.x86_64php70w-gd.x86_64php70w-ldap.x86_64php70w-mbstring.x86_64php70w-mcrypt.x86_64php70w-pdo.x86_64php70w-mysqlnd php70w-fpm php70w-opcache php70w-pecl-redis php70w-pecl-mongo</p>
+<p>安装常用模块</p>
+<p>5,安装nginx和php-fpm</p>
+<pre><code>yum install -y nginx
+
+#设置nginx开机启动
+
+ systemctl enable nginx
+
+ #设置php-fpm开机启动
+
+    systemctl enable php-fpm
+</code></pre><p>提示：</p>
+<p>1，之前自己安装的时候没有注意php的版本，apache安装成功了但是却不能解析php文件后面发现apache里没有加载php_module，</p>
+<p>可以使用httpd-M检查是否安装，有则代表安装过。然后安装php7安装的时候自动就加上了，可能是版本过低的原因吧~~</p>
+<p>2，如果是阿里云服务器有可能你的数据库一直连接不上，这时你应该检查下你阿里云服务器的安全组接口是否开启，3306这个端口是否添加到安全组规则里</p>
+<p>3，yum install –enablerepo=remi –enablerepo=remi-php56 php-fpm 安装php-fpm 进程管理器</p>
+<p>4,如果安装好了 环境 执行php文件 报403错误 看看nginx.conf配置文件里 有没有指定index.php</p>
+<p>如 ：location / {</p>
+<pre><code># root  html;
+
+index  index.html index.htm index.php;
+</code></pre><p>  }</p>
+<p>5，如果安装完执行php文件 页面显示为空白的话打开php.ini的：</p>
+<p>short_open_tag = On</p>
+<p>6，如果防火墙开启的记得把端口加入到防火墙列表列如：</p>
+<p>把 httpd 80端口加入到防火墙</p>
+<p>firewall-cmd –zone=public –add-port=80/tcp –permanent</p>
+<p>–zone : 在什么域添加</p>
+<p>–add-port:添加的端口号</p>
+<p>–permanent:永久添加模式</p>
+<p>参考文章：</p>
+<p><a href="https://segmentfault.com/a/1190000009012613" target="_blank" rel="noopener">https://segmentfault.com/a/1190000009012613</a></p>
+<p><a href="http://www.cnblogs.com/rrrena/p/7228826.html" target="_blank" rel="noopener">http://www.cnblogs.com/rrrena/p/7228826.html</a></p>
 
     </div>
 
@@ -328,13 +400,13 @@
           
         
         <div class="post-tags">
-            <a href="/tags/PostMan/" rel="tag"># PostMan</a>
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
           
         </div>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
-              <a href="/2019/08/13/关于PHP的flush和ob-flush的机制测试/" rel="next" title="关于PHP的flush和ob_flush的机制测试">
-                <i class="fa fa-chevron-left"></i> 关于PHP的flush和ob_flush的机制测试
+              <a href="/2019/08/20/gitignore和excludes的区别/" rel="next" title=".gitignore和excludes的区别">
+                <i class="fa fa-chevron-left"></i> .gitignore和excludes的区别
               </a>
             
           </div>
@@ -342,10 +414,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-              <a href="/2019/08/13/window自动开启redis服务/" rel="prev" title="window自动开启redis服务">
-                window自动开启redis服务 <i class="fa fa-chevron-right"></i>
-              </a>
-            
           </div>
         </div>
     </footer>
