@@ -57,28 +57,21 @@
   };
 </script>
 
-  <meta name="description" content="当用PostMan去提交post请求时，laravel(luemn)框架会有XSRF的验证，目的在使用PostMan通过XSRF的验证，用于测试POST的请求。以Laravel为例，Laravel会于回应浏览器的GET请求时将XSRF-TOKEN写在cookie中，因此本篇将示范如何从cookie中取得XSRF-TOKEN并附在POST的头部传递出去 一，安装chrome的扩充功能 PostMan">
-<meta name="keywords" content="PostMan">
+  <meta name="description" content="最近连接上公司的vpn后，发现内网的服务都访问不了，当断开的时候缺又都可以访问了，后来发现当本机连接上vpn后，系统会走vpn的网关去寻址，这时候当然反问不了了，这是只需要在路由哪里配置一个寻址的网关即可： 如我本地的网关是红色表示那个： 假设我需要反问的内网地址段是：10.10.0.0 配置的命令：12route -p add 10.10.0.0 mask 255.255.0.0 192.168">
+<meta name="keywords" content="Network">
 <meta property="og:type" content="article">
-<meta property="og:title" content="POSTMAN传递X-XSRF-TOKEN问题">
-<meta property="og:url" content="https://leiyuanpu.github.io/2019/08/13/POSTMAN传递X-XSRF-TOKEN问题/index.html">
+<meta property="og:title" content="windown连接上vpn后，内网不能访问的解决方案">
+<meta property="og:url" content="https://leiyuanpu.github.io/2019/08/23/windown连接上vpn后，内网不能访问的解决方案/index.html">
 <meta property="og:site_name" content="不知名的程序员">
-<meta property="og:description" content="当用PostMan去提交post请求时，laravel(luemn)框架会有XSRF的验证，目的在使用PostMan通过XSRF的验证，用于测试POST的请求。以Laravel为例，Laravel会于回应浏览器的GET请求时将XSRF-TOKEN写在cookie中，因此本篇将示范如何从cookie中取得XSRF-TOKEN并附在POST的头部传递出去 一，安装chrome的扩充功能 PostMan">
+<meta property="og:description" content="最近连接上公司的vpn后，发现内网的服务都访问不了，当断开的时候缺又都可以访问了，后来发现当本机连接上vpn后，系统会走vpn的网关去寻址，这时候当然反问不了了，这是只需要在路由哪里配置一个寻址的网关即可： 如我本地的网关是红色表示那个： 假设我需要反问的内网地址段是：10.10.0.0 配置的命令：12route -p add 10.10.0.0 mask 255.255.0.0 192.168">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8578697-3df756a81b87d401.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8578697-1af5a4a5ae18df59.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8578697-6cfbf99a5a643b3e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8578697-44ab0390b080a562.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8578697-3e80e6d13a4277da.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8578697-a3d0b56d728b74ca.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8578697-77075255ee041e38.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8578697-49d19983fbdd562d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2019-08-13T09:38:25.667Z">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8578697-078372f380f035ef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2019-08-23T07:24:02.139Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="POSTMAN传递X-XSRF-TOKEN问题">
-<meta name="twitter:description" content="当用PostMan去提交post请求时，laravel(luemn)框架会有XSRF的验证，目的在使用PostMan通过XSRF的验证，用于测试POST的请求。以Laravel为例，Laravel会于回应浏览器的GET请求时将XSRF-TOKEN写在cookie中，因此本篇将示范如何从cookie中取得XSRF-TOKEN并附在POST的头部传递出去 一，安装chrome的扩充功能 PostMan">
-<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/8578697-3df756a81b87d401.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-  <link rel="canonical" href="https://leiyuanpu.github.io/2019/08/13/POSTMAN传递X-XSRF-TOKEN问题/">
+<meta name="twitter:title" content="windown连接上vpn后，内网不能访问的解决方案">
+<meta name="twitter:description" content="最近连接上公司的vpn后，发现内网的服务都访问不了，当断开的时候缺又都可以访问了，后来发现当本机连接上vpn后，系统会走vpn的网关去寻址，这时候当然反问不了了，这是只需要在路由哪里配置一个寻址的网关即可： 如我本地的网关是红色表示那个： 假设我需要反问的内网地址段是：10.10.0.0 配置的命令：12route -p add 10.10.0.0 mask 255.255.0.0 192.168">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/8578697-078372f380f035ef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+  <link rel="canonical" href="https://leiyuanpu.github.io/2019/08/23/windown连接上vpn后，内网不能访问的解决方案/">
 
 
 <script id="page.configurations">
@@ -87,7 +80,7 @@
   };
 </script>
 
-  <title>POSTMAN传递X-XSRF-TOKEN问题 | 不知名的程序员</title>
+  <title>windown连接上vpn后，内网不能访问的解决方案 | 不知名的程序员</title>
   
 
 
@@ -235,7 +228,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/08/13/POSTMAN传递X-XSRF-TOKEN问题/">
+    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/08/23/windown连接上vpn后，内网不能访问的解决方案/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LYP">
@@ -249,7 +242,7 @@
       <header class="post-header">
 
         
-          <h1 class="post-title" itemprop="name headline">POSTMAN传递X-XSRF-TOKEN问题
+          <h1 class="post-title" itemprop="name headline">windown连接上vpn后，内网不能访问的解决方案
 
               
             
@@ -269,7 +262,7 @@
                 
               
 
-              <time title="创建时间：2019-08-13 17:37:30 / 修改时间：17:38:25" itemprop="dateCreated datePublished" datetime="2019-08-13T17:37:30+08:00">2019-08-13</time>
+              <time title="创建时间：2019-08-23 15:22:20 / 修改时间：15:24:02" itemprop="dateCreated datePublished" datetime="2019-08-23T15:22:20+08:00">2019-08-23</time>
             </span>
           
             
@@ -284,7 +277,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/PostMan/" itemprop="url" rel="index"><span itemprop="name">PostMan</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Network/" itemprop="url" rel="index"><span itemprop="name">Network</span></a></span>
 
                 
                 
@@ -303,20 +296,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>当用PostMan去提交post请求时，laravel(luemn)框架会有XSRF的验证，目的在使用PostMan通过XSRF的验证，用于测试POST的请求。以Laravel为例，Laravel会于回应浏览器的GET请求时将XSRF-TOKEN写在cookie中，因此本篇将示范如何从cookie中取得XSRF-TOKEN并附在POST的头部传递出去</p>
-<p>一，安装chrome的扩充功能</p>
-<pre><code>PostMan透过chrome为拦截器(Interceptor)来记录的cookie，因此要先安装PostMan在chrome的扩展。
-</code></pre><p>网址：<a href="https://chrome.google.com/webstore/detail/postman-interceptor/aicmkgpgakddgnaphhhpliifpcfhicfo" target="_blank" rel="noopener">https</a>：<a href="https://chrome.google.com/webstore/detail/postman-interceptor/aicmkgpgakddgnaphhhpliifpcfhicfo" target="_blank" rel="noopener">//chrome.google.com/webstore/detail/postman-interceptor/aicmkgpgakddgnaphhhpliifpcfhicfo</a></p>
-<p>二，在postMan扩展安装好后，新增一个开发环境<br>    2.1 在postMan的右上角有个环境设置的选项<br>    <img src="https://upload-images.jianshu.io/upload_images/8578697-3df756a81b87d401.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="![3.png](https://upload-images.jianshu.io/upload_images/8578697-aa6508f806d89b4a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-"></p>
-<p><img src="https://upload-images.jianshu.io/upload_images/8578697-1af5a4a5ae18df59.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="2.png"><br><img src="https://upload-images.jianshu.io/upload_images/8578697-6cfbf99a5a643b3e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="3.png"></p>
-<p>三，设置完之后选择刚刚建立的环境，然后执行一个get请求获取cookie<br><img src="https://upload-images.jianshu.io/upload_images/8578697-44ab0390b080a562.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="5.png"></p>
-<p>3.1,把这段代码放入tests里</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pm.environment.set(</span><br><span class="line">    &quot;XSRF-TOKEN&quot;, </span><br><span class="line">    decodeURIComponent(pm.cookies.get(&quot;XSRF-TOKEN&quot;))</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p><img src="https://upload-images.jianshu.io/upload_images/8578697-3e80e6d13a4277da.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="6.png"></p>
-<p>3.2，执行一个get请求查看下刚刚设置的环境，这是会有以下效果<br><img src="https://upload-images.jianshu.io/upload_images/8578697-a3d0b56d728b74ca.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="7.png"></p>
-<p>3.3设置X-XSRF-TOKEN<br><img src="https://upload-images.jianshu.io/upload_images/8578697-77075255ee041e38.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="8.png"></p>
-<p>3.4，执行一个post请求，完美执行成功<br><img src="https://upload-images.jianshu.io/upload_images/8578697-49d19983fbdd562d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="9.png"></p>
+        <p>最近连接上公司的vpn后，发现内网的服务都访问不了，当断开的时候缺又都可以访问了，后来发现当本机连接上vpn后，系统会走vpn的网关去寻址，这时候当然反问不了了，这是只需要在路由哪里配置一个寻址的网关即可：</p>
+<p>如我本地的网关是红色表示那个：<br><img src="https://upload-images.jianshu.io/upload_images/8578697-078372f380f035ef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="w.png"></p>
+<p>假设我需要反问的内网地址段是：10.10.0.0</p>
+<p>配置的命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">route -p add 10.10.0.0 mask 255.255.0.0 192.168.254.100 metric 1</span><br><span class="line">ok</span><br></pre></td></tr></table></figure></p>
+<p>查看路由表命令：route PRINT -4<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">===========================================================================</span><br><span class="line">Interface List</span><br><span class="line"> 12...........................Flipwires</span><br><span class="line"> 11...88 d7 f6 7d 6f 8d ......Realtek PCIe GbE Family Controller</span><br><span class="line">  1...........................Software Loopback Interface 1</span><br><span class="line"> 16...00 00 00 00 00 00 00 e0 Microsoft ISATAP Adapter #4</span><br><span class="line"> 17...00 00 00 00 00 00 00 e0 Microsoft ISATAP Adapter #5</span><br><span class="line">===========================================================================</span><br><span class="line"></span><br><span class="line">IPv4 Route Table</span><br><span class="line">===========================================================================</span><br><span class="line">Active Routes:</span><br><span class="line">Network Destination        Netmask          Gateway       Interface  Metric</span><br><span class="line">          0.0.0.0          0.0.0.0  192.168.254.100  192.168.112.100    286</span><br><span class="line">          0.0.0.0          0.0.0.0         On-link    172.31.185.182     16</span><br><span class="line">        10.10.0.0      255.255.0.0  192.168.254.100  192.168.112.100     31</span><br><span class="line">===========================================================================</span><br><span class="line">Persistent Routes:</span><br><span class="line">  Network Address          Netmask  Gateway Address  Metric</span><br><span class="line">          0.0.0.0          0.0.0.0  192.168.254.100  Default</span><br><span class="line">          0.0.0.0          0.0.0.0  192.168.254.100  Default</span><br><span class="line">        10.10.0.0      255.255.0.0  192.168.254.100       1</span><br><span class="line">===========================================================================</span><br><span class="line">可以看到我们刚刚新增的那个路由关系</span><br></pre></td></tr></table></figure></p>
+<p>这段话的意思是：10.10.0.0这个网段的网络都通过192.168.254.100这网关去寻找，这命令是永久路由，重启电脑命令不会丢失</p>
+<p>不出意外这个时候你就可以在连接上vpn的同时又可以访问内网啦啦啦。</p>
 
     </div>
 
@@ -328,13 +314,13 @@
           
         
         <div class="post-tags">
-            <a href="/tags/PostMan/" rel="tag"># PostMan</a>
+            <a href="/tags/Network/" rel="tag"># Network</a>
           
         </div>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
-              <a href="/2019/08/13/关于PHP的flush和ob-flush的机制测试/" rel="next" title="关于PHP的flush和ob_flush的机制测试">
-                <i class="fa fa-chevron-left"></i> 关于PHP的flush和ob_flush的机制测试
+              <a href="/2019/08/21/centos7简单安装配置Lamp/" rel="next" title="centos7简单安装配置Lamp">
+                <i class="fa fa-chevron-left"></i> centos7简单安装配置Lamp
               </a>
             
           </div>
@@ -342,10 +328,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-              <a href="/2019/08/13/window自动开启redis服务/" rel="prev" title="window自动开启redis服务">
-                window自动开启redis服务 <i class="fa fa-chevron-right"></i>
-              </a>
-            
           </div>
         </div>
     </footer>
