@@ -65,12 +65,12 @@
 <meta property="og:site_name" content="不知名的程序员">
 <meta property="og:description" content="最近连接上公司的vpn后，发现内网的服务都访问不了，当断开的时候缺又都可以访问了，后来发现当本机连接上vpn后，系统会走vpn的网关去寻址，这时候当然反问不了了，这是只需要在路由哪里配置一个寻址的网关即可： 如我本地的网关是红色表示那个： 假设我需要反问的内网地址段是：10.10.0.0 配置的命令：12route -p add 10.10.0.0 mask 255.255.0.0 192.168">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://leiyuanpu.github.io/2019/08/23/windown连接上vpn后，内网不能访问的解决方案/svn.png">
-<meta property="og:updated_time" content="2019-08-26T07:30:03.025Z">
+<meta property="og:image" content="https://leiyuanpu.github.io/2019/08/23/windown连接上vpn后，内网不能访问的解决方案/vpn.png">
+<meta property="og:updated_time" content="2019-08-26T07:35:10.503Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="windown连接上vpn后，内网不能访问的解决方案">
 <meta name="twitter:description" content="最近连接上公司的vpn后，发现内网的服务都访问不了，当断开的时候缺又都可以访问了，后来发现当本机连接上vpn后，系统会走vpn的网关去寻址，这时候当然反问不了了，这是只需要在路由哪里配置一个寻址的网关即可： 如我本地的网关是红色表示那个： 假设我需要反问的内网地址段是：10.10.0.0 配置的命令：12route -p add 10.10.0.0 mask 255.255.0.0 192.168">
-<meta name="twitter:image" content="https://leiyuanpu.github.io/2019/08/23/windown连接上vpn后，内网不能访问的解决方案/svn.png">
+<meta name="twitter:image" content="https://leiyuanpu.github.io/2019/08/23/windown连接上vpn后，内网不能访问的解决方案/vpn.png">
   <link rel="canonical" href="https://leiyuanpu.github.io/2019/08/23/windown连接上vpn后，内网不能访问的解决方案/">
 
 
@@ -275,7 +275,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-26 15:30:03" itemprop="dateModified" datetime="2019-08-26T15:30:03+08:00">2019-08-26</time>
+                <time title="修改时间：2019-08-26 15:35:10" itemprop="dateModified" datetime="2019-08-26T15:35:10+08:00">2019-08-26</time>
               </span>
             
           
@@ -307,7 +307,7 @@
 
       
         <p>最近连接上公司的vpn后，发现内网的服务都访问不了，当断开的时候缺又都可以访问了，后来发现当本机连接上vpn后，系统会走vpn的网关去寻址，这时候当然反问不了了，这是只需要在路由哪里配置一个寻址的网关即可：</p>
-<p>如我本地的网关是红色表示那个：<br><img src="/2019/08/23/windown连接上vpn后，内网不能访问的解决方案/svn.png" alt="hexo image"></p>
+<p>如我本地的网关是红色表示那个：<br><img src="/2019/08/23/windown连接上vpn后，内网不能访问的解决方案/vpn.png" alt="hexo image"></p>
 <p>假设我需要反问的内网地址段是：10.10.0.0</p>
 <p>配置的命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">route -p add 10.10.0.0 mask 255.255.0.0 192.168.254.100 metric 1</span><br><span class="line">ok</span><br></pre></td></tr></table></figure></p>
 <p>查看路由表命令：route PRINT -4<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">===========================================================================</span><br><span class="line">Interface List</span><br><span class="line"> 12...........................Flipwires</span><br><span class="line"> 11...88 d7 f6 7d 6f 8d ......Realtek PCIe GbE Family Controller</span><br><span class="line">  1...........................Software Loopback Interface 1</span><br><span class="line"> 16...00 00 00 00 00 00 00 e0 Microsoft ISATAP Adapter #4</span><br><span class="line"> 17...00 00 00 00 00 00 00 e0 Microsoft ISATAP Adapter #5</span><br><span class="line">===========================================================================</span><br><span class="line"></span><br><span class="line">IPv4 Route Table</span><br><span class="line">===========================================================================</span><br><span class="line">Active Routes:</span><br><span class="line">Network Destination        Netmask          Gateway       Interface  Metric</span><br><span class="line">          0.0.0.0          0.0.0.0  192.168.254.100  192.168.112.100    286</span><br><span class="line">          0.0.0.0          0.0.0.0         On-link    172.31.185.182     16</span><br><span class="line">        10.10.0.0      255.255.0.0  192.168.254.100  192.168.112.100     31</span><br><span class="line">===========================================================================</span><br><span class="line">Persistent Routes:</span><br><span class="line">  Network Address          Netmask  Gateway Address  Metric</span><br><span class="line">          0.0.0.0          0.0.0.0  192.168.254.100  Default</span><br><span class="line">          0.0.0.0          0.0.0.0  192.168.254.100  Default</span><br><span class="line">        10.10.0.0      255.255.0.0  192.168.254.100       1</span><br><span class="line">===========================================================================</span><br><span class="line">可以看到我们刚刚新增的那个路由关系</span><br></pre></td></tr></table></figure></p>
