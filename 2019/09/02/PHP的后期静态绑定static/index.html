@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.8.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    search: {
+      root: '/',
+      path: 'search.xml'
+    },
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="自 PHP 5.3.0 起，PHP 增加了一个叫做后期静态绑定的功能，用于在继承范围内引用静态调用的类。准确说，后期静态绑定工作原理是存储了在上一个“非转发调用”（non-forwarding call）的类名。 当进行静态方法调用时，该类名即为明确指定的那个（通常在 :: 运算符左侧部分）；当进行非静态方法调用时，即为该对象所属的类。 所谓的“转发调用”（forwarding call）指的是">
+<meta name="keywords" content="PHP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP的后期静态绑定static">
+<meta property="og:url" content="https://leiyuanpu.github.io/2019/09/02/PHP的后期静态绑定static/index.html">
+<meta property="og:site_name" content="不知名的程序员">
+<meta property="og:description" content="自 PHP 5.3.0 起，PHP 增加了一个叫做后期静态绑定的功能，用于在继承范围内引用静态调用的类。准确说，后期静态绑定工作原理是存储了在上一个“非转发调用”（non-forwarding call）的类名。 当进行静态方法调用时，该类名即为明确指定的那个（通常在 :: 运算符左侧部分）；当进行非静态方法调用时，即为该对象所属的类。 所谓的“转发调用”（forwarding call）指的是">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-02T02:34:22.257Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PHP的后期静态绑定static">
+<meta name="twitter:description" content="自 PHP 5.3.0 起，PHP 增加了一个叫做后期静态绑定的功能，用于在继承范围内引用静态调用的类。准确说，后期静态绑定工作原理是存储了在上一个“非转发调用”（non-forwarding call）的类名。 当进行静态方法调用时，该类名即为明确指定的那个（通常在 :: 运算符左侧部分）；当进行非静态方法调用时，即为该对象所属的类。 所谓的“转发调用”（forwarding call）指的是">
+  <link rel="canonical" href="https://leiyuanpu.github.io/2019/09/02/PHP的后期静态绑定static/">
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>PHP的后期静态绑定static | 不知名的程序员</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">不知名的程序员</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+    <ul id="menu" class="menu">
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+    </ul>
+</nav>
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/09/02/PHP的后期静态绑定static/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LYP">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不知名的程序员">
+    </span>
+      <header class="post-header">
+
+        
+          <h1 class="post-title" itemprop="name headline">PHP的后期静态绑定static
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-02 10:33:04 / 修改时间：10:34:22" itemprop="dateCreated datePublished" datetime="2019-09-02T10:33:04+08:00">2019-09-02</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          <br>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p> 自 PHP 5.3.0 起，PHP 增加了一个叫做后期静态绑定的功能，用于在继承范围内引用静态调用的类。准确说，后期静态绑定工作原理是存储了在上一个“非转发调用”（non-forwarding call）的类名。</p>
+<p>当进行静态方法调用时，该类名即为明确指定的那个（通常在 <a href="https://www.php.net/manual/zh/language.oop5.paamayim-nekudotayim.php" target="_blank" rel="noopener"><em>::</em></a> 运算符左侧部分）；当进行非静态方法调用时，即为该对象所属的类。</p>
+<p>所谓的“转发调用”（forwarding call）指的是通过以下几种方式进行的静态调用：<em>self::</em>，<em>parent::</em>，<em>static::</em> 以及 <a href="https://www.php.net/manual/zh/function.forward-static-call.php" target="_blank" rel="noopener">forward_static_call()</a>。可用 <a href="https://www.php.net/manual/zh/function.get-called-class.php" target="_blank" rel="noopener">get_called_class()</a> 函数来得到被调用的方法所在的类名，<em>static::</em> 则指出了其范围。该功能从语言内部角度考虑被命名为“后期静态绑定”。</p>
+<p>“后期绑定”的意思是说，<em>static::</em> 不再被解析为定义当前方法所在的类，而是在实际运行时计算的。也可以称之为“静态绑定”，因为它可以用于（但不限于）静态方法的调用。</p>
+<p>上面是PHP文档里对后期静态绑定的解释里面有几个重点：<br>1，后期静态绑定原理是存储了在上一个”非转发调用”的类名。<br>2，转发调用是通过<em>self::</em>，<em>parent::</em>，<em>static::</em> 以及 <a href="https://www.php.net/manual/zh/function.forward-static-call.php" target="_blank" rel="noopener">forward_static_call()</a>实现的<br>3，static::不再被解析为方法的当前类，而是通过实际运算计算出来的。<br>4，当进行静态方法调用时，该类名即为明确指定的那个 如（C::getName）类名就是C<br>5，；当进行非静态方法调用时，即为该对象所属的类 如($this-&gt;getName)类 这时候指的应该是$this所属的实例化对象。</p>
+<p>转发调用 :</p>
+<p>指的是通过以下几种方式进行的静态调用：self::，parent::，static:: 以及 forward_static_call()。<br>非转发调用 ：</p>
+<p>明确指定类名的静态调用（例如A::test()）<br>非静态调用（例如$A-&gt;test()）</p>
+<p>场景一：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class A &#123;</span><br><span class="line">    public static function who() &#123;</span><br><span class="line">        echo __CLASS__;</span><br><span class="line">    &#125;</span><br><span class="line">    public static function test() &#123;</span><br><span class="line">        static::who(); // 后期静态绑定从这里开始</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class B extends A &#123;</span><br><span class="line">    public static function who() &#123;</span><br><span class="line">        echo __CLASS__;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">B::test(); //B</span><br><span class="line">分析：B::test时A类的test方法会通过 static::who 进修转发调用，这时候static::指向的是B类而不是A类</span><br></pre></td></tr></table></figure></p>
+<p>场景二<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">class A &#123;</span><br><span class="line">    private function foo() &#123;</span><br><span class="line">        echo &quot;success!\n&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    public function test() &#123;</span><br><span class="line">        $this-&gt;foo();</span><br><span class="line">        static::foo();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class B extends A &#123;</span><br><span class="line">   /* foo() will be copied to B, hence its scope will still be A and</span><br><span class="line">    * the call be successful */</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class C extends A &#123;</span><br><span class="line">    private function foo() &#123;</span><br><span class="line">        /* original method is replaced; the scope of the new one is C */</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$b = new B();</span><br><span class="line">$b-&gt;test();</span><br><span class="line">输出：</span><br><span class="line">success!</span><br><span class="line">success!</span><br><span class="line">$c = new C();</span><br><span class="line">$c-&gt;test();   //fails</span><br><span class="line">输出：</span><br><span class="line">success!</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Fatal error:  Call to private method C::foo() from context &apos;A&apos; in /tmp/test.php on line 9</span><br></pre></td></tr></table></figure></p>
+<p>总结：在非静态环境下，所调用的类即为该对象实例所属的类。由于 $this-&gt; 会在同一作用范围内尝试调用私有方法（即A类中的foo方法），而 static:: 则可能给出不同结果会转发调用（这时候会调用到C中的foo方法，由于它是私有的于是报错）。另一个区别是 static:: 只能用于静态属性。</p>
+<p>场景三：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">class A &#123;</span><br><span class="line">    public static function foo() &#123;</span><br><span class="line">        static::who();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static function who() &#123;</span><br><span class="line">        echo __CLASS__.&quot;\n&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class B extends A &#123;</span><br><span class="line">    public static function test() &#123;</span><br><span class="line">        A::foo();</span><br><span class="line">        parent::foo();</span><br><span class="line">        self::foo();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static function who() &#123;</span><br><span class="line">        echo __CLASS__.&quot;\n&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class C extends B &#123;</span><br><span class="line">    public static function who() &#123;</span><br><span class="line">        echo __CLASS__.&quot;\n&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">C::test();//A C C</span><br></pre></td></tr></table></figure></p>
+<p>总结：后期静态绑定的解析会一直到取得一个完全解析了的静态调用为止。另一方面，如果静态调用使用 parent:: 或者 self:: 将转发调用信息，如上面场景三，他最终实际上转发给了C这个类。static关键字最终先会转发到他第一个调用的类（如这里的C），然后再一层层的往上找，假如这时候把C中的who方法注释，这时候结果就会变成（<strong>ABB</strong>）。</p>
+<p>获取实例化对象的使用self和static的对比<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class Base</span><br><span class="line">&#123;</span><br><span class="line">    private static $instance;</span><br><span class="line">    public $name;</span><br><span class="line"></span><br><span class="line">    public static function getInstance()</span><br><span class="line">    &#123;</span><br><span class="line">        $class = get_called_class(); //动态获取调用类</span><br><span class="line">        if (!isset(self::$instance[$class]))</span><br><span class="line">        &#123;</span><br><span class="line">            self::$instance[$class] = new self(); //获取的当前类即base类</span><br><span class="line">        &#125;</span><br><span class="line">        return self::$instance[$class];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class A extends Base</span><br><span class="line">&#123;</span><br><span class="line">    public function who()</span><br><span class="line">    &#123;</span><br><span class="line">        return __class__;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class B extends Base</span><br><span class="line">&#123;</span><br><span class="line">    public function who()</span><br><span class="line">    &#123;</span><br><span class="line">        return __class__;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var_dump(A::getInstance()); //</span><br><span class="line">// D:\www\my_project\test\a.php:34:</span><br><span class="line">// object(Base)[1]</span><br><span class="line">//   public &apos;name&apos; =&gt; null</span><br><span class="line">var_dump(B::getInstance());</span><br><span class="line">// D:\www\my_project\test\a.php:34:</span><br><span class="line">// object(Base)[1]</span><br><span class="line">//   public &apos;name&apos; =&gt; null</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class Base</span><br><span class="line">&#123;</span><br><span class="line">    private static $instance;</span><br><span class="line">    public $name;</span><br><span class="line"></span><br><span class="line">    public static function getInstance()</span><br><span class="line">    &#123;</span><br><span class="line">        $class = get_called_class(); //动态获取调用类</span><br><span class="line">        if (!isset(self::$instance[$class]))</span><br><span class="line">        &#123;</span><br><span class="line">            self::$instance[$class] = new static();</span><br><span class="line"> //由于转发调用所以会通过实际的调用计算来获取当前的对象</span><br><span class="line">        &#125;</span><br><span class="line">        return self::$instance[$class];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class A extends Base</span><br><span class="line">&#123;</span><br><span class="line">    public function who()</span><br><span class="line">    &#123;</span><br><span class="line">        return __class__;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class B extends Base</span><br><span class="line">&#123;</span><br><span class="line">    public function who()</span><br><span class="line">    &#123;</span><br><span class="line">        return __class__;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">var_dump(A::getInstance()); //</span><br><span class="line">// D:\www\my_project\test\a.php:34:</span><br><span class="line">// object(A)[1]</span><br><span class="line">//   public &apos;name&apos; =&gt; null</span><br><span class="line">var_dump(B::getInstance());</span><br><span class="line">// D:\www\my_project\test\a.php:38:</span><br><span class="line">// object(B)[2]</span><br><span class="line">//   public &apos;name&apos; =&gt; null</span><br></pre></td></tr></table></figure>
+<p>上面可以发现当我们使用self的时候永远获取的都是Base这个类，而使用static的时候就可以动态的获取调用对象了。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+        
+        <div class="post-tags">
+            <a href="/tags/PHP/" rel="tag"># PHP</a>
+          
+        </div>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+              <a href="/2019/08/26/PSR-2编码规范在Phpstorm中的使用/" rel="next" title="PSR-2编码规范在Phpstorm中的使用">
+                <i class="fa fa-chevron-left"></i> PSR-2编码规范在Phpstorm中的使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+          </div>
+        </div>
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">LYP</p>
+  <div class="site-description motion-element" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+        </div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LYP</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  <script src="/js/utils.js?v=7.3.0"></script>
+  <script src="/js/motion.js?v=7.3.0"></script>
+
+  
+  <script src="/js/affix.js?v=7.3.0"></script>
+  <script src="/js/schemes/pisces.js?v=7.3.0"></script>
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script>
+<script src="/js/post-details.js?v=7.3.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.3.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

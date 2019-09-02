@@ -220,6 +220,120 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/09/02/PHP的后期静态绑定static/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LYP">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不知名的程序员">
+    </span>
+      <header class="post-header">
+
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/09/02/PHP的后期静态绑定static/" class="post-title-link" itemprop="url">PHP的后期静态绑定static</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-02 10:33:04 / 修改时间：10:34:22" itemprop="dateCreated datePublished" datetime="2019-09-02T10:33:04+08:00">2019-09-02</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          <br>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+            <p> 自 PHP 5.3.0 起，PHP 增加了一个叫做后期静态绑定的功能，用于在继承范围内引用静态调用的类。准确说，后期静态绑定工作原理是存储了在上一个“非转发调用”（non-forwarding call）的类名。</p>
+<p>当进行静态方法调用时，该类名即为明确指定的那个（通常在 <a href="https://www.php.net/manual/zh/language.oop5.paamayim-nekudotayim.php" target="_blank" rel="noopener"><em>::</em></a> 运算符左侧部分）；当进行非静态方法调用时，即为该对象所属的类。</p>
+<p>所谓的“转发调用”（forwarding call）指的是通过以下几种方式进行的静态调用：<em>self::</em>，<em>parent::</em>，<em>static::</em> 以及 <a href="https://www.php.net/manual/zh/function.forward-static-call.php" target="_blank" rel="noopener">forward_static_call()</a>。可用 <a href="https://www.php.net/manual/zh/function.get-called-class.php" target="_blank" rel="noopener">get_called_class()</a> 函数来得到被调用的方法所在的类名，<em>static::</em> 则指出了其范围。该功能从语言内部角度考虑被命名为“后期静态绑定”。</p>
+<p>“后期绑定”的意思是说，<em>static::</em> 不再被解析为定义当前方法所在的类，而是在实际运行时计算的。也可以称之为“静态绑定”，因为它可以用于（但不限于）静态方法的调用。</p>
+<p>上面是PHP文档里对后期静态绑定的解释里面有几个重点：<br>1，后期静态绑定原理是存储了在上一个”非转发调用”的类名。<br>2，转发调用是通过<em>self::</em>，<em>parent::</em>，<em>static::</em> 以及 <a href="https://www.php.net/manual/zh/function.forward-static-call.php" target="_blank" rel="noopener">forward_static_call()</a>实现的<br>3，static::不再被解析为方法的当前类，而是通过实际运算计算出来的。<br>4，当进行静态方法调用时，该类名即为明确指定的那个 如（C::getName）类名就是C<br>5，；当进行非静态方法调用时，即为该对象所属的类 如($this-&gt;getName)类 这时候指的应该是$this所属的实例化对象。</p>
+<p>转发调用 :</p>
+<p>指的是通过以下几种方式进行的静态调用：self::，parent::，static:: 以及 forward_static_call()。<br>非转发调用 ：</p>
+<p>明确指定类名的静态调用（例如A::test()）<br>非静态调用（例如$A-&gt;test()）</p>
+<p>场景一：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class A &#123;</span><br><span class="line">    public static function who() &#123;</span><br><span class="line">        echo __CLASS__;</span><br><span class="line">    &#125;</span><br><span class="line">    public static function test() &#123;</span><br><span class="line">        static::who(); // 后期静态绑定从这里开始</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class B extends A &#123;</span><br><span class="line">    public static function who() &#123;</span><br><span class="line">        echo __CLASS__;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">B::test(); //B</span><br><span class="line">分析：B::test时A类的test方法会通过 static::who 进修转发调用，这时候static::指向的是B类而不是A类</span><br></pre></td></tr></table></figure></p>
+<p>场景二<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">class A &#123;</span><br><span class="line">    private function foo() &#123;</span><br><span class="line">        echo &quot;success!\n&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    public function test() &#123;</span><br><span class="line">        $this-&gt;foo();</span><br><span class="line">        static::foo();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class B extends A &#123;</span><br><span class="line">   /* foo() will be copied to B, hence its scope will still be A and</span><br><span class="line">    * the call be successful */</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class C extends A &#123;</span><br><span class="line">    private function foo() &#123;</span><br><span class="line">        /* original method is replaced; the scope of the new one is C */</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$b = new B();</span><br><span class="line">$b-&gt;test();</span><br><span class="line">输出：</span><br><span class="line">success!</span><br><span class="line">success!</span><br><span class="line">$c = new C();</span><br><span class="line">$c-&gt;test();   //fails</span><br><span class="line">输出：</span><br><span class="line">success!</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Fatal error:  Call to private method C::foo() from context &apos;A&apos; in /tmp/test.php on line 9</span><br></pre></td></tr></table></figure></p>
+<p>总结：在非静态环境下，所调用的类即为该对象实例所属的类。由于 $this-&gt; 会在同一作用范围内尝试调用私有方法（即A类中的foo方法），而 static:: 则可能给出不同结果会转发调用（这时候会调用到C中的foo方法，由于它是私有的于是报错）。另一个区别是 static:: 只能用于静态属性。</p>
+<p>场景三：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">class A &#123;</span><br><span class="line">    public static function foo() &#123;</span><br><span class="line">        static::who();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static function who() &#123;</span><br><span class="line">        echo __CLASS__.&quot;\n&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class B extends A &#123;</span><br><span class="line">    public static function test() &#123;</span><br><span class="line">        A::foo();</span><br><span class="line">        parent::foo();</span><br><span class="line">        self::foo();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static function who() &#123;</span><br><span class="line">        echo __CLASS__.&quot;\n&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class C extends B &#123;</span><br><span class="line">    public static function who() &#123;</span><br><span class="line">        echo __CLASS__.&quot;\n&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">C::test();//A C C</span><br></pre></td></tr></table></figure></p>
+<p>总结：后期静态绑定的解析会一直到取得一个完全解析了的静态调用为止。另一方面，如果静态调用使用 parent:: 或者 self:: 将转发调用信息，如上面场景三，他最终实际上转发给了C这个类。static关键字最终先会转发到他第一个调用的类（如这里的C），然后再一层层的往上找，假如这时候把C中的who方法注释，这时候结果就会变成（<strong>ABB</strong>）。</p>
+<p>获取实例化对象的使用self和static的对比<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class Base</span><br><span class="line">&#123;</span><br><span class="line">    private static $instance;</span><br><span class="line">    public $name;</span><br><span class="line"></span><br><span class="line">    public static function getInstance()</span><br><span class="line">    &#123;</span><br><span class="line">        $class = get_called_class(); //动态获取调用类</span><br><span class="line">        if (!isset(self::$instance[$class]))</span><br><span class="line">        &#123;</span><br><span class="line">            self::$instance[$class] = new self(); //获取的当前类即base类</span><br><span class="line">        &#125;</span><br><span class="line">        return self::$instance[$class];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class A extends Base</span><br><span class="line">&#123;</span><br><span class="line">    public function who()</span><br><span class="line">    &#123;</span><br><span class="line">        return __class__;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class B extends Base</span><br><span class="line">&#123;</span><br><span class="line">    public function who()</span><br><span class="line">    &#123;</span><br><span class="line">        return __class__;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var_dump(A::getInstance()); //</span><br><span class="line">// D:\www\my_project\test\a.php:34:</span><br><span class="line">// object(Base)[1]</span><br><span class="line">//   public &apos;name&apos; =&gt; null</span><br><span class="line">var_dump(B::getInstance());</span><br><span class="line">// D:\www\my_project\test\a.php:34:</span><br><span class="line">// object(Base)[1]</span><br><span class="line">//   public &apos;name&apos; =&gt; null</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class Base</span><br><span class="line">&#123;</span><br><span class="line">    private static $instance;</span><br><span class="line">    public $name;</span><br><span class="line"></span><br><span class="line">    public static function getInstance()</span><br><span class="line">    &#123;</span><br><span class="line">        $class = get_called_class(); //动态获取调用类</span><br><span class="line">        if (!isset(self::$instance[$class]))</span><br><span class="line">        &#123;</span><br><span class="line">            self::$instance[$class] = new static();</span><br><span class="line"> //由于转发调用所以会通过实际的调用计算来获取当前的对象</span><br><span class="line">        &#125;</span><br><span class="line">        return self::$instance[$class];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class A extends Base</span><br><span class="line">&#123;</span><br><span class="line">    public function who()</span><br><span class="line">    &#123;</span><br><span class="line">        return __class__;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class B extends Base</span><br><span class="line">&#123;</span><br><span class="line">    public function who()</span><br><span class="line">    &#123;</span><br><span class="line">        return __class__;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">var_dump(A::getInstance()); //</span><br><span class="line">// D:\www\my_project\test\a.php:34:</span><br><span class="line">// object(A)[1]</span><br><span class="line">//   public &apos;name&apos; =&gt; null</span><br><span class="line">var_dump(B::getInstance());</span><br><span class="line">// D:\www\my_project\test\a.php:38:</span><br><span class="line">// object(B)[2]</span><br><span class="line">//   public &apos;name&apos; =&gt; null</span><br></pre></td></tr></table></figure>
+<p>上面可以发现当我们使用self的时候永远获取的都是Base这个类，而使用static的时候就可以动态的获取调用对象了。</p>
+
+          
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/08/26/PSR-2编码规范在Phpstorm中的使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1284,115 +1398,6 @@ index  index.html index.htm index.php;
   </article>
 
     
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/08/13/关于PHP的flush和ob-flush的机制测试/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="LYP">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="不知名的程序员">
-    </span>
-      <header class="post-header">
-
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/08/13/关于PHP的flush和ob-flush的机制测试/" class="post-title-link" itemprop="url">关于PHP的flush和ob_flush的机制测试</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-08-13 17:32:09 / 修改时间：17:33:31" itemprop="dateCreated datePublished" datetime="2019-08-13T17:32:09+08:00">2019-08-13</time>
-            </span>
-          
-            
-
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          <br>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-            <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">php正常的一个输出过高需要经历的阶段：</span><br><span class="line">echo/print -&gt; php buffer -&gt; tcp buffer -&gt; browser</span><br></pre></td></tr></table></figure>
-<p>一，buffer —- flush()</p>
-<p>buffer是一个内存地址空间,Linux系统默认大小一般为4096(1kb),即一个内存页。主要用于存储速度不同步的设备或者优先级不同的 设备之间传办理数据的区域。通过buffer，可以使进程这间的相互等待变少。这里说一个通俗一点的例子，你打开文本编辑器编辑一个文件的时候，你每输入 一个字符，操作系统并不会立即把这个字符直接写入到磁盘，而是先写入到buffer，当写满了一个buffer的时候，才会把buffer中的数据写入磁 盘，当然当调用内核函数flush()的时候，强制要求把buffer中的脏数据写回磁盘。<br>同样的道理，当执行echo,print的时候，输出并没有立即通过tcp传给客户端浏览器显示, 而是将数据写入php buffer。php output_buffering机制，意味在tcp buffer之前，建立了一新的队列，数据必须经过该队列。当一个php buffer写满的时候，脚本进程会将php buffer中的输出数据交给系统内核交由tcp传给浏览器显示。</p>
-<p>二，php output_buffering — ob_flush()</p>
-<p>默认情况下，php buffer是开启的，而且该buffer默认值是4096，即1kb。你可以通过在php.ini配置文件中找到output_buffering配置.当echo,print等输出用户数据的时候，输出数据都会写入到php output_buffering中，直到output_buffering写满，会将这些数据通过tcp传送给浏览器显示。你也可以通过 ob_start()手动激活php output_buffering机制，使得即便输出超过了1kb数据，也不真的把数据交给tcp传给浏览器，因为ob_start()将php buffer空间设置到了足够大 。只有直到脚本结束，或者调用ob_end_flush函数，才会把数据发送给客户端浏览器。</p>
-<p>这两个函数的使用怕是很多人最迷惑的一个问题，手册上对两个函数的解释也语焉不详，没有明确的指出它们的区别，似乎二者的功能都是刷新输出缓存。但在我们文章一开始的代码中如果讲fush()替换成ob_flush()，程序就再不能正确执行了。显然，它们是有区别的，否则也手册中直接说明其中一个是另外一个函数的别名即可了，没必要分别说明。那么它们的区别到底是什么呢？</p>
-<p>在没有开启缓存时，脚本输出的内容都在服务器端处于等待输出的状态 ，flush()可以将等待输出的内容立即发送到客户端。</p>
-<p>开启缓存后，脚本输出的内容存入了输出缓存中 ，这时没有处于等待输出状态的内容，你直接使用flush()不会向客户端发出任何内容。而 ob_flush()的作用就是将本来存在输出缓存中的内容取出来，设置为等待输出状态，但不会直接发送到客户端 ，这时你就需要先使用 ob_flush()再使用flush()，客户端才能立即获得脚本的输出。</p>
-<p>三，测试<br>3.1，output_buffering=4096，输出较少的数据（少于一个buffer）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">for($i=0; $i&lt;10; $i++)&#123;</span><br><span class="line">    echo $i.&apos;&lt;br&gt;&apos;;</span><br><span class="line">    sleep(1);</span><br><span class="line">&#125;</span><br><span class="line">运行结果：等所有脚本全部运行完成后，才输出，因为数据未满一个buffer的大小。</span><br></pre></td></tr></table></figure></p>
-<p>3.2.output_buffering=4096，输出较少的数据（少于一个buffer），关闭output_buffering，修改php.ini的output_buffering=0<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">for($i=0; $i&lt;10; $i++)&#123;</span><br><span class="line">    echo $i.str_repeat(&quot;&amp;nbsp;&quot;,1000).&apos;&lt;br&gt;&apos;; // 为了浏览器能够显示</span><br><span class="line">    flush();</span><br><span class="line">    sleep(1);</span><br><span class="line">&#125;</span><br><span class="line">运行结果：因为禁用了php buffering，不需要等到脚本运行完毕就可以输出，数据没有在php buffer停留，可以看到断断续续间歇性输出。echo -&gt; tcp buffer -&gt;browser</span><br></pre></td></tr></table></figure></p>
-<p>参考博文：<br><a href="https://blog.csdn.net/fdipzone/article/details/10367837" target="_blank" rel="noopener">https://blog.csdn.net/fdipzone/article/details/10367837</a><br><a href="http://www.laruence.com/2010/04/15/1414.html" target="_blank" rel="noopener">http://www.laruence.com/2010/04/15/1414.html</a><br><a href="https://www.cnblogs.com/zhangyuhang3/p/6873502.html" target="_blank" rel="noopener">https://www.cnblogs.com/zhangyuhang3/p/6873502.html</a><br><a href="http://niliu.me/articles/605.html#comment-2983" target="_blank" rel="noopener">http://niliu.me/articles/605.html#comment-2983</a></p>
-
-          
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </section>
 
   
@@ -1430,7 +1435,7 @@ index  index.html index.htm index.php;
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
