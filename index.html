@@ -220,6 +220,170 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/09/12/int（1）和int（10）的区别/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LYP">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不知名的程序员">
+    </span>
+      <header class="post-header">
+
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/09/12/int（1）和int（10）的区别/" class="post-title-link" itemprop="url">int（1）和int（10）的区别</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-12 09:07:49 / 修改时间：09:09:45" itemprop="dateCreated datePublished" datetime="2019-09-12T09:07:49+08:00">2019-09-12</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Mysql/" itemprop="url" rel="index"><span itemprop="name">Mysql</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          <br>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+            <p>我们知道char(10),varchar(10)这种都是指占用多少个字节，比如用char(10)存储‘1234567890ab’,会被截断成’1234567890’,因为超过了指定长度10。</p>
+<p>但是整形跟char、varchar不同，整形分为tinyint，smallint，mediumint，bigint</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">类型</th>
+<th style="text-align:right">字节</th>
+<th style="text-align:center">有符号最小值</th>
+<th style="text-align:center">有符号最大值</th>
+<th style="text-align:center">无符号最小值</th>
+<th style="text-align:center">无符号最大值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">tinyint</td>
+<td style="text-align:right">1</td>
+<td style="text-align:center">-128</td>
+<td style="text-align:center">127</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">255</td>
+</tr>
+<tr>
+<td style="text-align:left">smallint</td>
+<td style="text-align:right">2</td>
+<td style="text-align:center">-32768</td>
+<td style="text-align:center">32767</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">65535</td>
+</tr>
+<tr>
+<td style="text-align:left">mediumint</td>
+<td style="text-align:right">3</td>
+<td style="text-align:center">-8388608</td>
+<td style="text-align:center">8388607</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">16777215</td>
+</tr>
+<tr>
+<td style="text-align:left">int</td>
+<td style="text-align:right">4</td>
+<td style="text-align:center">-2147483648</td>
+<td style="text-align:center">2147483647</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">16777215</td>
+</tr>
+<tr>
+<td style="text-align:left">bigint</td>
+<td style="text-align:right">8</td>
+<td style="text-align:center">-9223372036854775808</td>
+<td style="text-align:center">9223372036854775807</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">18446744073709551615</td>
+</tr>
+</tbody>
+</table>
+<p>既然已经根据长度不同，内置了整形的不同类型，那么int(1)和int(11)有什么区别了？</p>
+<p>$\color{red}{int(M)}$我们先来拆分，int是代表整型数据那么中间的M应该是代表多少位了，后来查mysql手册也得知了我的理解是正确的，下面我来举例说明。</p>
+<p>MySQL 数据类型中的 integer types 有点奇怪。你可能会见到诸如：int(3)、int(4)、int(8) 之类的 int 数据类型。刚接触 MySQL 的时候，我还以为 int(3) 占用的存储空间比 int(4) 要小， int(4) 占用的存储空间比 int(8) 小。<br>后来，参看 MySQL 手册，发现自己理解错了。</p>
+<p>int(M): M indicates the maximum display width for integer types.1<br>在 integer 数据类型中，M 表示最大显示宽度。</p>
+<p>原来，在 int(M) 中，M 的值跟 int(M) 所占多少存储空间并无任何关系。 int(3)、int(4)、int(8) 在磁盘上都是占用 4 btyes 的存储空间。说白了，除了显示给用户的方式有点不同外，int(M) 跟 int 数据类型是相同的。<br>另外，int(M) 只有跟 zerofill 结合起来，才能使我们清楚的看到不同之处。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; drop table if exists t;</span><br><span class="line">mysql&gt; create table t(id int zerofill);</span><br><span class="line">mysql&gt; insert into t(id) values(10);</span><br><span class="line">mysql&gt; select * from t;</span><br><span class="line">+------------+</span><br><span class="line">| id         |</span><br><span class="line">+------------+</span><br><span class="line">| 0000000010 |</span><br><span class="line">+------------+</span><br><span class="line">mysql&gt; alter table t change column id id int(3) zerofill;</span><br><span class="line">mysql&gt; select * from t;</span><br><span class="line">+------+</span><br><span class="line">| id   |</span><br><span class="line">+------+</span><br><span class="line">|  010 |</span><br><span class="line">+------+</span><br><span class="line">mysql&gt;</span><br><span class="line">mysql&gt; alter table t change column id id int(4) zerofill;</span><br><span class="line">mysql&gt; select * from t;</span><br><span class="line">+------+</span><br><span class="line">| id   |</span><br><span class="line">+------+</span><br><span class="line">| 0010 |</span><br><span class="line">+------+</span><br><span class="line">mysql&gt;</span><br><span class="line">mysql&gt; insert into t(id) values(1000000);</span><br><span class="line">mysql&gt; select * from t;</span><br><span class="line">+---------+</span><br><span class="line">| id      |</span><br><span class="line">+---------+</span><br><span class="line">|    0010 |</span><br><span class="line">| 1000000 |</span><br><span class="line">+---------+</span><br></pre></td></tr></table></figure>
+<p>从上面的测试可以看出，“(M)”指定了 int 型数值显示的宽度，如果字段数据类型是 int(4)，则：当显示数值 10 时，在左边要补上 “00”；当显示数值 100 是，在左边要补上“0”；当显示数值 1000000 时，已经超过了指定宽度“（4）”，因此按原样输出。 在使用 MySQL 数据类型中的整数类型（tinyint、smallint、 mediumint、 int/integer、bigint）时，非特殊需求下，在数据类型后加个“(M)”，是没有任何意义的。</p>
+<p>int(1)和int(11)在实际使用中，如果不使用 zerofill 是没有任何区别的，而且int型最大只能存储4294967295这个整数，我们可以发现其实只有10位。</p>
+<p>综上所述，当我们需要用整形来存储一个字段类型的时候，应该尽量估算出该字段所需要的实际长度，比如tinyint可存储无符号最大值是255（1个字节长度，即2的8次方），smallint可存储无符号最大值是65535（2个字节长度，即2的16次方），mediumint可存储无符号最大值是16777215（3个字节长度，即2的24次方），而int型最大可存储4294967295（3个字节长度，即2的32次方）</p>
+<p>转载：<a href="https://helloape.com/article/22" target="_blank" rel="noopener">https://helloape.com/article/22</a></p>
+
+          
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/09/09/C语言实现单向链表详解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1275,130 +1439,6 @@ index  index.html index.htm index.php;
   </article>
 
     
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/08/13/window自动开启redis服务/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="LYP">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="不知名的程序员">
-    </span>
-      <header class="post-header">
-
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/08/13/window自动开启redis服务/" class="post-title-link" itemprop="url">window自动开启redis服务</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-08-13 17:41:07" itemprop="dateCreated datePublished" datetime="2019-08-13T17:41:07+08:00">2019-08-13</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-08-26 15:44:31" itemprop="dateModified" datetime="2019-08-26T15:44:31+08:00">2019-08-26</time>
-              </span>
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          <br>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-            <p>1，检查服务是否开启</p>
-<pre><code>位置：控制面板\所有控制面板项\管理工具\服务
-</code></pre><p><img src="/2019/08/13/window自动开启redis服务/redis-no.png" alt="hexo image"></p>
-<p>如果没有发现redis则代表 redis服务没有开启。</p>
-<p>2，开启redis服务</p>
-<pre><code>redis-server --service-install redis.windows-service.conf --loglevel verbose
-</code></pre><p><img src="/2019/08/13/window自动开启redis服务/kaiqi.jpg" alt="hexo image"></p>
-<p>3，查看服务是否开启成功<br><img src="/2019/08/13/window自动开启redis服务/chakan.jpg" alt="hexo image"></p>
-<p>大功告成。</p>
-<p>常用命令：</p>
-<pre><code>卸载服务：redis-server --service-uninstall
-
-开启服务：redis-server --service-start
-
-停止服务：redis-server --service-stop
-</code></pre><p>参考：<a href="https://blog.csdn.net/blick__winkel/article/details/77986481" target="_blank" rel="noopener">https://blog.csdn.net/blick__winkel/article/details/77986481</a></p>
-
-          
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </section>
 
   
@@ -1436,7 +1476,7 @@ index  index.html index.htm index.php;
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-count">15</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
