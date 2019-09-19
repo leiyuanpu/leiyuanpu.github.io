@@ -57,19 +57,19 @@
   };
 </script>
 
-  <meta name="description" content="我们知道char(10),varchar(10)这种都是指占用多少个字节，比如用char(10)存储‘1234567890ab’,会被截断成’1234567890’,因为超过了指定长度10。 但是整形跟char、varchar不同，整形分为tinyint，smallint，mediumint，bigint    类型 字节 有符号最小值 有符号最大值 无符号最小值 无符号最大值     tinyi">
-<meta name="keywords" content="Mysql">
+  <meta name="description" content="1，获取API返回参数： 1var jsonData =JSON.parse(responseBody);//获取body中返回的所有参数 2，设置全局变量1postman.setGlobalVariable(&amp;quot;Auth&amp;quot;,jsonData.data.authToken);//把返回参数中的keys设置为环境变量 4，获取全局变量1postman.getGlobalVariab">
+<meta name="keywords" content="PostMan">
 <meta property="og:type" content="article">
-<meta property="og:title" content="int（1）和int（10）的区别">
-<meta property="og:url" content="https://leiyuanpu.github.io/2019/09/12/int（1）和int（10）的区别/index.html">
+<meta property="og:title" content="PostMan工具之tests项设置">
+<meta property="og:url" content="https://leiyuanpu.github.io/2019/09/19/PostMan工具之tests项设置/index.html">
 <meta property="og:site_name" content="不知名的程序员">
-<meta property="og:description" content="我们知道char(10),varchar(10)这种都是指占用多少个字节，比如用char(10)存储‘1234567890ab’,会被截断成’1234567890’,因为超过了指定长度10。 但是整形跟char、varchar不同，整形分为tinyint，smallint，mediumint，bigint    类型 字节 有符号最小值 有符号最大值 无符号最小值 无符号最大值     tinyi">
+<meta property="og:description" content="1，获取API返回参数： 1var jsonData =JSON.parse(responseBody);//获取body中返回的所有参数 2，设置全局变量1postman.setGlobalVariable(&amp;quot;Auth&amp;quot;,jsonData.data.authToken);//把返回参数中的keys设置为环境变量 4，获取全局变量1postman.getGlobalVariab">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-12T01:09:45.149Z">
+<meta property="og:updated_time" content="2019-09-19T06:43:18.446Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="int（1）和int（10）的区别">
-<meta name="twitter:description" content="我们知道char(10),varchar(10)这种都是指占用多少个字节，比如用char(10)存储‘1234567890ab’,会被截断成’1234567890’,因为超过了指定长度10。 但是整形跟char、varchar不同，整形分为tinyint，smallint，mediumint，bigint    类型 字节 有符号最小值 有符号最大值 无符号最小值 无符号最大值     tinyi">
-  <link rel="canonical" href="https://leiyuanpu.github.io/2019/09/12/int（1）和int（10）的区别/">
+<meta name="twitter:title" content="PostMan工具之tests项设置">
+<meta name="twitter:description" content="1，获取API返回参数： 1var jsonData =JSON.parse(responseBody);//获取body中返回的所有参数 2，设置全局变量1postman.setGlobalVariable(&amp;quot;Auth&amp;quot;,jsonData.data.authToken);//把返回参数中的keys设置为环境变量 4，获取全局变量1postman.getGlobalVariab">
+  <link rel="canonical" href="https://leiyuanpu.github.io/2019/09/19/PostMan工具之tests项设置/">
 
 
 <script id="page.configurations">
@@ -78,7 +78,7 @@
   };
 </script>
 
-  <title>int（1）和int（10）的区别 | 不知名的程序员</title>
+  <title>PostMan工具之tests项设置 | 不知名的程序员</title>
   
 
 
@@ -226,7 +226,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/09/12/int（1）和int（10）的区别/">
+    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/09/19/PostMan工具之tests项设置/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LYP">
@@ -240,7 +240,7 @@
       <header class="post-header">
 
         
-          <h1 class="post-title" itemprop="name headline">int（1）和int（10）的区别
+          <h1 class="post-title" itemprop="name headline">PostMan工具之tests项设置
 
               
             
@@ -260,7 +260,7 @@
                 
               
 
-              <time title="创建时间：2019-09-12 09:07:49 / 修改时间：09:09:45" itemprop="dateCreated datePublished" datetime="2019-09-12T09:07:49+08:00">2019-09-12</time>
+              <time title="创建时间：2019-09-19 14:42:07 / 修改时间：14:43:18" itemprop="dateCreated datePublished" datetime="2019-09-19T14:42:07+08:00">2019-09-19</time>
             </span>
           
             
@@ -275,7 +275,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Mysql/" itemprop="url" rel="index"><span itemprop="name">Mysql</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/PostMan/" itemprop="url" rel="index"><span itemprop="name">PostMan</span></a></span>
 
                 
                 
@@ -294,72 +294,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>我们知道char(10),varchar(10)这种都是指占用多少个字节，比如用char(10)存储‘1234567890ab’,会被截断成’1234567890’,因为超过了指定长度10。</p>
-<p>但是整形跟char、varchar不同，整形分为tinyint，smallint，mediumint，bigint</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">类型</th>
-<th style="text-align:right">字节</th>
-<th style="text-align:center">有符号最小值</th>
-<th style="text-align:center">有符号最大值</th>
-<th style="text-align:center">无符号最小值</th>
-<th style="text-align:center">无符号最大值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">tinyint</td>
-<td style="text-align:right">1</td>
-<td style="text-align:center">-128</td>
-<td style="text-align:center">127</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">255</td>
-</tr>
-<tr>
-<td style="text-align:left">smallint</td>
-<td style="text-align:right">2</td>
-<td style="text-align:center">-32768</td>
-<td style="text-align:center">32767</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">65535</td>
-</tr>
-<tr>
-<td style="text-align:left">mediumint</td>
-<td style="text-align:right">3</td>
-<td style="text-align:center">-8388608</td>
-<td style="text-align:center">8388607</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">16777215</td>
-</tr>
-<tr>
-<td style="text-align:left">int</td>
-<td style="text-align:right">4</td>
-<td style="text-align:center">-2147483648</td>
-<td style="text-align:center">2147483647</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">16777215</td>
-</tr>
-<tr>
-<td style="text-align:left">bigint</td>
-<td style="text-align:right">8</td>
-<td style="text-align:center">-9223372036854775808</td>
-<td style="text-align:center">9223372036854775807</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">18446744073709551615</td>
-</tr>
-</tbody>
-</table>
-<p>既然已经根据长度不同，内置了整形的不同类型，那么int(1)和int(11)有什么区别了？</p>
-<p>$\color{red}{int(M)}$我们先来拆分，int是代表整型数据那么中间的M应该是代表多少位了，后来查mysql手册也得知了我的理解是正确的，下面我来举例说明。</p>
-<p>MySQL 数据类型中的 integer types 有点奇怪。你可能会见到诸如：int(3)、int(4)、int(8) 之类的 int 数据类型。刚接触 MySQL 的时候，我还以为 int(3) 占用的存储空间比 int(4) 要小， int(4) 占用的存储空间比 int(8) 小。<br>后来，参看 MySQL 手册，发现自己理解错了。</p>
-<p>int(M): M indicates the maximum display width for integer types.1<br>在 integer 数据类型中，M 表示最大显示宽度。</p>
-<p>原来，在 int(M) 中，M 的值跟 int(M) 所占多少存储空间并无任何关系。 int(3)、int(4)、int(8) 在磁盘上都是占用 4 btyes 的存储空间。说白了，除了显示给用户的方式有点不同外，int(M) 跟 int 数据类型是相同的。<br>另外，int(M) 只有跟 zerofill 结合起来，才能使我们清楚的看到不同之处。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; drop table if exists t;</span><br><span class="line">mysql&gt; create table t(id int zerofill);</span><br><span class="line">mysql&gt; insert into t(id) values(10);</span><br><span class="line">mysql&gt; select * from t;</span><br><span class="line">+------------+</span><br><span class="line">| id         |</span><br><span class="line">+------------+</span><br><span class="line">| 0000000010 |</span><br><span class="line">+------------+</span><br><span class="line">mysql&gt; alter table t change column id id int(3) zerofill;</span><br><span class="line">mysql&gt; select * from t;</span><br><span class="line">+------+</span><br><span class="line">| id   |</span><br><span class="line">+------+</span><br><span class="line">|  010 |</span><br><span class="line">+------+</span><br><span class="line">mysql&gt;</span><br><span class="line">mysql&gt; alter table t change column id id int(4) zerofill;</span><br><span class="line">mysql&gt; select * from t;</span><br><span class="line">+------+</span><br><span class="line">| id   |</span><br><span class="line">+------+</span><br><span class="line">| 0010 |</span><br><span class="line">+------+</span><br><span class="line">mysql&gt;</span><br><span class="line">mysql&gt; insert into t(id) values(1000000);</span><br><span class="line">mysql&gt; select * from t;</span><br><span class="line">+---------+</span><br><span class="line">| id      |</span><br><span class="line">+---------+</span><br><span class="line">|    0010 |</span><br><span class="line">| 1000000 |</span><br><span class="line">+---------+</span><br></pre></td></tr></table></figure>
-<p>从上面的测试可以看出，“(M)”指定了 int 型数值显示的宽度，如果字段数据类型是 int(4)，则：当显示数值 10 时，在左边要补上 “00”；当显示数值 100 是，在左边要补上“0”；当显示数值 1000000 时，已经超过了指定宽度“（4）”，因此按原样输出。 在使用 MySQL 数据类型中的整数类型（tinyint、smallint、 mediumint、 int/integer、bigint）时，非特殊需求下，在数据类型后加个“(M)”，是没有任何意义的。</p>
-<p>int(1)和int(11)在实际使用中，如果不使用 zerofill 是没有任何区别的，而且int型最大只能存储4294967295这个整数，我们可以发现其实只有10位。</p>
-<p>综上所述，当我们需要用整形来存储一个字段类型的时候，应该尽量估算出该字段所需要的实际长度，比如tinyint可存储无符号最大值是255（1个字节长度，即2的8次方），smallint可存储无符号最大值是65535（2个字节长度，即2的16次方），mediumint可存储无符号最大值是16777215（3个字节长度，即2的24次方），而int型最大可存储4294967295（3个字节长度，即2的32次方）</p>
-<p>转载：<a href="https://helloape.com/article/22" target="_blank" rel="noopener">https://helloape.com/article/22</a></p>
+        <p>1，获取API返回参数：<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var jsonData =JSON.parse(responseBody);//获取body中返回的所有参数</span><br></pre></td></tr></table></figure></p>
+<p>2，设置全局变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">postman.setGlobalVariable(&quot;Auth&quot;,jsonData.data.authToken);//把返回参数中的keys设置为环境变量</span><br></pre></td></tr></table></figure></p>
+<p>4，获取全局变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">postman.getGlobalVariable(&quot;Auth&quot;);</span><br></pre></td></tr></table></figure></p>
+<p>4，设置环境变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">postman.setEnvironmentVariable(&quot;key&quot;, &quot;value&quot;);</span><br></pre></td></tr></table></figure></p>
+<p>5，获取环境变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">postman.getEnvironmentVariable(&quot;key&quot;);</span><br></pre></td></tr></table></figure></p>
+<p>6，获取URL请求的cookie，并且设置到环境变量里<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pm.environment.set(</span><br><span class="line">    &quot;XSRF-TOKEN&quot;, </span><br><span class="line">    decodeURIComponent(pm.cookies.get(&quot;XSRF-TOKEN&quot;))</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
 
     </div>
 
@@ -371,13 +311,13 @@
           
         
         <div class="post-tags">
-            <a href="/tags/Mysql/" rel="tag"># Mysql</a>
+            <a href="/tags/PostMan/" rel="tag"># PostMan</a>
           
         </div>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
-              <a href="/2019/09/09/C语言实现单向链表详解/" rel="next" title="C语言实现单向链表详解">
-                <i class="fa fa-chevron-left"></i> C语言实现单向链表详解
+              <a href="/2019/09/12/int（1）和int（10）的区别/" rel="next" title="int（1）和int（10）的区别">
+                <i class="fa fa-chevron-left"></i> int（1）和int（10）的区别
               </a>
             
           </div>
@@ -385,10 +325,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-              <a href="/2019/09/19/PostMan工具之tests项设置/" rel="prev" title="PostMan工具之tests项设置">
-                PostMan工具之tests项设置 <i class="fa fa-chevron-right"></i>
-              </a>
-            
           </div>
         </div>
     </footer>
