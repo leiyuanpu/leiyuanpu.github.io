@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[字符串反转算法]]></title>
+    <url>%2F2019%2F09%2F24%2F%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8F%8D%E8%BD%AC%E7%AE%97%E6%B3%95%2F</url>
+    <content type="text"><![CDATA[12345678910111213141516&lt;?php$a = &apos;123abc123abc&apos;;$aLen = strlen($a);$revLen = floor($aLen / 2);for ($i = 0; $i &lt; $revLen; $i++) &#123; $temp = $a[$i]; $a[$i] = $a[$aLen - 1 - $i]; $a[$aLen - 1] = $temp;&#125;echo $a; //cba321123abc]]></content>
+      <categories>
+        <category>数据与结构</category>
+      </categories>
+      <tags>
+        <tag>数据与结构</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[字符串朴素的模式匹配算法]]></title>
     <url>%2F2019%2F09%2F24%2F%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%9C%B4%E7%B4%A0%E7%9A%84%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D%E7%AE%97%E6%B3%95%2F</url>
     <content type="text"><![CDATA[1234567891011121314151617&lt;?php$a = &apos;123abc123abc&apos;;$b = &apos;123&apos;;$aLen = strlen($a);$bLen = strlen($b);for ($i = 0; $i &lt; $aLen; $i++) &#123; for ($j = 0; $j &lt; $bLen; $j++) &#123; if ($b[$j] != $a[$i + $j]) &#123; //a和b只要有一位不相同，a则从匹配到下一位继续开始匹配。 break; &#125; &#125; if ($j == $bLen) &#123; echo &apos;ok&apos;; &#125;&#125;]]></content>
