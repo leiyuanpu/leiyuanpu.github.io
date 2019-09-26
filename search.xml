@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[冒泡排序优化版]]></title>
+    <url>%2F2019%2F09%2F26%2F%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F%E4%BC%98%E5%8C%96%E7%89%88%2F</url>
+    <content type="text"><![CDATA[1234567891011121314151617181920&lt;?php$num = [2, 1, 5, 3, 4, 9];$strlen = count($num);static $flage = true;for ($i = 0; $i &lt; $strlen &amp;&amp; $flage; $i++) &#123; $flage = false; for ($j = $strlen - 1; $j &gt; 0; $j--) &#123; if ($num[$j] &lt; $num[$j - 1]) &#123; $temp = $num[$j - 1]; $num[$j - 1] = $num[$j]; $num[$j] = $temp; $flage = true; &#125; &#125;&#125;print_r($num); //Array ( [0] =&gt; 1 [1] =&gt; 2 [2] =&gt; 3 [3] =&gt; 4 [4] =&gt; 5 [5] =&gt; 9 )]]></content>
+      <categories>
+        <category>数据与结构</category>
+      </categories>
+      <tags>
+        <tag>数据与结构</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[字符串反转算法]]></title>
     <url>%2F2019%2F09%2F24%2F%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8F%8D%E8%BD%AC%E7%AE%97%E6%B3%95%2F</url>
     <content type="text"><![CDATA[12345678910111213141516&lt;?php$a = &apos;123abc123abc&apos;;$aLen = strlen($a);$revLen = floor($aLen / 2);for ($i = 0; $i &lt; $revLen; $i++) &#123; $temp = $a[$i]; $a[$i] = $a[$aLen - 1 - $i]; $a[$aLen - 1] = $temp;&#125;echo $a; //cba321123abc]]></content>
