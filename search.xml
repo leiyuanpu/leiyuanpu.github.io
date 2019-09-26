@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[PHP之递归函数]]></title>
+    <url>%2F2019%2F09%2F26%2FPHP%E4%B9%8B%E9%80%92%E5%BD%92%E5%87%BD%E6%95%B0%2F</url>
+    <content type="text"><![CDATA[1234567891011121314151617181920212223$list = [ [&apos;id&apos; =&gt; 1, &apos;p_id&apos; =&gt; 0, &apos;city&apos; =&gt; &apos;湖南&apos;], [&apos;id&apos; =&gt; 2, &apos;p_id&apos; =&gt; 1, &apos;city&apos; =&gt; &apos;郴州&apos;], [&apos;id&apos; =&gt; 3, &apos;p_id&apos; =&gt; 2, &apos;city&apos; =&gt; &apos;嘉禾&apos;], [&apos;id&apos; =&gt; 4, &apos;p_id&apos; =&gt; 1, &apos;city&apos; =&gt; &apos;永州&apos;],];function recursive($list, $pid = 0)&#123; $retList = []; foreach ($list as $key =&gt; $item) &#123; if ($pid == $item[&apos;p_id&apos;]) &#123; //返回的是下一层的$retList数组,如果没有符合值则返回空 $item[&apos;child&apos;] = recursive($list, $item[&apos;id&apos;]); //把同一层的放在一个数组里，如这里的p_id = 0 $retList[] = $item; &#125; &#125; return $retList;&#125;print_r(recursive($list));// 思路：先递后归，先把最后一层的数据找到，然后再回归。]]></content>
+      <categories>
+        <category>数据与结构</category>
+      </categories>
+      <tags>
+        <tag>数据与结构</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[快速排序]]></title>
     <url>%2F2019%2F09%2F26%2F%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%2F</url>
     <content type="text"><![CDATA[1234567891011121314151617181920212223242526272829303132333435363738394041424344$arr = [11, 8, 43, 23, 10, 100];function quickSort($arr)&#123; $count = count($arr); if ($count &lt;= 1) &#123; return $arr; &#125; //选个轴 $comparedNum = $arr[0]; $smallList = $bigList = array(); for ($i = 1; $i &lt; $count; $i++) &#123; //小于对比数的放一起，大于的放一起 if ($arr[$i] &lt; $comparedNum) &#123; $smallList[] = $arr[$i]; &#125; else &#123; $bigList[] = $arr[$i]; &#125; &#125; $smallList = quickSort($smallList); $bigList = quickSort($bigList); return array_merge($smallList, array($comparedNum), $bigList);&#125;print_r(quickSort($arr)); //Array ( [0] =&gt; 8 [1] =&gt; 10 [2] =&gt; 11 [3] =&gt; 23 [4] =&gt; 43 [5] =&gt; 100 )//重点是理解这里的递归，这里可以举个例子：比如$arr = [2,1,4,3]// 1，第一次执行 $smallList[] = 1；$bigList = [4,3]// 2，调用quickSort($smallList，因为它只有一个元素)，函数会直接返回$smallList，因为它只有一个元素// 3，调用quickSort($bigList) 它会执行然后返回一个 array_merge合并后的数组 [3,4]// 3.1 因为这个时候$bigList有2个元素，于是它就会进入到for循环里，然后和对比数对比，// 照样分为$smallList和$bigList 两个数组，这个时候$smallList = [3];$bigList = [],// 然后继续分别调用 $smallList = quickSort($smallList); $bigList = quickSort($bigList); // 但是这个时候他们分别为$smallList为1个元素，$bigList为0个元素，这时候// $count = count($arr);// if ($count &lt;= 1) &#123;// return $arr;// &#125;//这个条件将直接返回，不会再继续递归下去了。然后 array_merge 合并返回// 最后 3 这个步骤里调用的quickSort($bigList) 将会得到一个合并后的结果 [3,4]//最后在把 2 和 3的结果 和 选择的对比数($comparedNum),合并即得到我们最后的结果了。]]></content>

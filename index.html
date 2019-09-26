@@ -220,6 +220,105 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/09/26/PHP之递归函数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LYP">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不知名的程序员">
+    </span>
+      <header class="post-header">
+
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/09/26/PHP之递归函数/" class="post-title-link" itemprop="url">PHP之递归函数</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-26 17:24:39 / 修改时间：17:25:38" itemprop="dateCreated datePublished" datetime="2019-09-26T17:24:39+08:00">2019-09-26</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据与结构/" itemprop="url" rel="index"><span itemprop="name">数据与结构</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          <br>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+            <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">$list = [</span><br><span class="line">    [&apos;id&apos; =&gt; 1, &apos;p_id&apos; =&gt; 0, &apos;city&apos; =&gt; &apos;湖南&apos;],</span><br><span class="line">    [&apos;id&apos; =&gt; 2, &apos;p_id&apos; =&gt; 1, &apos;city&apos; =&gt; &apos;郴州&apos;],</span><br><span class="line">    [&apos;id&apos; =&gt; 3, &apos;p_id&apos; =&gt; 2, &apos;city&apos; =&gt; &apos;嘉禾&apos;],</span><br><span class="line">    [&apos;id&apos; =&gt; 4, &apos;p_id&apos; =&gt; 1, &apos;city&apos; =&gt; &apos;永州&apos;],</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">function recursive($list, $pid = 0)</span><br><span class="line">&#123;</span><br><span class="line">    $retList = [];</span><br><span class="line">    foreach ($list as $key =&gt; $item) &#123;</span><br><span class="line">        if ($pid == $item[&apos;p_id&apos;]) &#123;</span><br><span class="line">            //返回的是下一层的$retList数组,如果没有符合值则返回空</span><br><span class="line">            $item[&apos;child&apos;] = recursive($list, $item[&apos;id&apos;]); </span><br><span class="line">            //把同一层的放在一个数组里，如这里的p_id = 0</span><br><span class="line">            $retList[]     = $item;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return  $retList;</span><br><span class="line">&#125;</span><br><span class="line">print_r(recursive($list));</span><br><span class="line"></span><br><span class="line">// 思路：先递后归，先把最后一层的数据找到，然后再回归。</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/09/26/快速排序/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1225,126 +1324,11 @@
   </article>
 
     
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/08/23/windown连接上vpn后，内网不能访问的解决方案/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="LYP">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="不知名的程序员">
-    </span>
-      <header class="post-header">
-
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/08/23/windown连接上vpn后，内网不能访问的解决方案/" class="post-title-link" itemprop="url">windown连接上vpn后，内网不能访问的解决方案</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-08-23 15:22:20" itemprop="dateCreated datePublished" datetime="2019-08-23T15:22:20+08:00">2019-08-23</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-08-26 15:35:10" itemprop="dateModified" datetime="2019-08-26T15:35:10+08:00">2019-08-26</time>
-              </span>
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Network/" itemprop="url" rel="index"><span itemprop="name">Network</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          <br>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-            <p>最近连接上公司的vpn后，发现内网的服务都访问不了，当断开的时候缺又都可以访问了，后来发现当本机连接上vpn后，系统会走vpn的网关去寻址，这时候当然反问不了了，这是只需要在路由哪里配置一个寻址的网关即可：</p>
-<p>如我本地的网关是红色表示那个：<br><img src="/2019/08/23/windown连接上vpn后，内网不能访问的解决方案/vpn.png" alt="hexo image"></p>
-<p>假设我需要反问的内网地址段是：10.10.0.0</p>
-<p>配置的命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">route -p add 10.10.0.0 mask 255.255.0.0 192.168.254.100 metric 1</span><br><span class="line">ok</span><br></pre></td></tr></table></figure></p>
-<p>查看路由表命令：route PRINT -4<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">===========================================================================</span><br><span class="line">Interface List</span><br><span class="line"> 12...........................Flipwires</span><br><span class="line"> 11...88 d7 f6 7d 6f 8d ......Realtek PCIe GbE Family Controller</span><br><span class="line">  1...........................Software Loopback Interface 1</span><br><span class="line"> 16...00 00 00 00 00 00 00 e0 Microsoft ISATAP Adapter #4</span><br><span class="line"> 17...00 00 00 00 00 00 00 e0 Microsoft ISATAP Adapter #5</span><br><span class="line">===========================================================================</span><br><span class="line"></span><br><span class="line">IPv4 Route Table</span><br><span class="line">===========================================================================</span><br><span class="line">Active Routes:</span><br><span class="line">Network Destination        Netmask          Gateway       Interface  Metric</span><br><span class="line">          0.0.0.0          0.0.0.0  192.168.254.100  192.168.112.100    286</span><br><span class="line">          0.0.0.0          0.0.0.0         On-link    172.31.185.182     16</span><br><span class="line">        10.10.0.0      255.255.0.0  192.168.254.100  192.168.112.100     31</span><br><span class="line">===========================================================================</span><br><span class="line">Persistent Routes:</span><br><span class="line">  Network Address          Netmask  Gateway Address  Metric</span><br><span class="line">          0.0.0.0          0.0.0.0  192.168.254.100  Default</span><br><span class="line">          0.0.0.0          0.0.0.0  192.168.254.100  Default</span><br><span class="line">        10.10.0.0      255.255.0.0  192.168.254.100       1</span><br><span class="line">===========================================================================</span><br><span class="line">可以看到我们刚刚新增的那个路由关系</span><br></pre></td></tr></table></figure></p>
-<p>这段话的意思是：10.10.0.0这个网段的网络都通过192.168.254.100这网关去寻找，这命令是永久路由，重启电脑命令不会丢失</p>
-<p>不出意外这个时候你就可以在连接上vpn的同时又可以访问内网啦啦啦。</p>
-
-          
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1377,7 +1361,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-count">21</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
