@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.8.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    search: {
+      root: '/',
+      path: 'search.xml'
+    },
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="安装过程： 123456789101112131415161718192021222324252627cd /usr/srcwget https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm #安装yum源yum localinstall mysql80-community-release-el7-1.noarch.r">
+<meta property="og:type" content="article">
+<meta property="og:title" content="不知名的程序员">
+<meta property="og:url" content="https://leiyuanpu.github.io/2019/12/06/centos7安装mysql8的坑/index.html">
+<meta property="og:site_name" content="不知名的程序员">
+<meta property="og:description" content="安装过程： 123456789101112131415161718192021222324252627cd /usr/srcwget https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm #安装yum源yum localinstall mysql80-community-release-el7-1.noarch.r">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-06T08:24:56.272Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="不知名的程序员">
+<meta name="twitter:description" content="安装过程： 123456789101112131415161718192021222324252627cd /usr/srcwget https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm #安装yum源yum localinstall mysql80-community-release-el7-1.noarch.r">
+  <link rel="canonical" href="https://leiyuanpu.github.io/2019/12/06/centos7安装mysql8的坑/">
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title> | 不知名的程序员</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">不知名的程序员</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+    <ul id="menu" class="menu">
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+    </ul>
+</nav>
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/12/06/centos7安装mysql8的坑/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LYP">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不知名的程序员">
+    </span>
+      <header class="post-header">
+
+        
+          <h1 class="post-title" itemprop="name headline">
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-06 16:24:56" itemprop="dateCreated datePublished" datetime="2019-12-06T16:24:56+08:00">2019-12-06</time>
+            </span>
+          
+
+          <br>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>安装过程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/src</span><br><span class="line">wget https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm</span><br><span class="line"> </span><br><span class="line">#安装yum源</span><br><span class="line">yum localinstall mysql80-community-release-el7-1.noarch.rpm</span><br><span class="line"> </span><br><span class="line">#更新yum源</span><br><span class="line">yum clean all</span><br><span class="line">yum makecache</span><br><span class="line"> </span><br><span class="line">#开始安装MySQL</span><br><span class="line">yum install mysql-community-server</span><br><span class="line"> </span><br><span class="line">#启动MySQL</span><br><span class="line">systemctl start mysqld</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">至此安装完成</span><br><span class="line"></span><br><span class="line">第四步获取密码：</span><br><span class="line"></span><br><span class="line">[root@izj6c3njvldcpf6rgj4srvz src]# cat /var/log/mysqld.log | grep password</span><br><span class="line">2019-12-04T01:59:00.167999Z 5 [Note] [MY-010454] [Server] A temporary password is generated for root@localhost: l4neY,lKxG5D</span><br><span class="line"></span><br><span class="line">#登录MySQL修改mysql用户密码，密码不能太简单</span><br><span class="line">mysql -u root -p</span><br><span class="line">mysql&gt; ALTER USER &apos;root&apos;@&apos;localhost&apos; IDENTIFIED BY &apos;l4neY,lKxG6D&apos;;</span><br></pre></td></tr></table></figure>
+<p>异常：<br>Job for mysqld.service failed because the control process exited with error code. See “systemctl status mysqld.service” and “journalctl -xe” for details.</p>
+<p>打开日志：cat /var/log/mysqld.log<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">2019-12-03T14:55:59.513203Z 0 [System] [MY-010116] [Server] /usr/sbin/mysqld (mysqld 8.0.18) starting as process 1088</span><br><span class="line">2019-12-03T14:55:59.626483Z 1 [ERROR] [MY-011011] [Server] Failed to find valid data directory.</span><br><span class="line">2019-12-03T14:55:59.626637Z 0 [ERROR] [MY-010020] [Server] Data Dictionary initialization failed.</span><br><span class="line">2019-12-03T14:55:59.626707Z 0 [ERROR] [MY-010119] [Server] Aborting</span><br></pre></td></tr></table></figure></p>
+<p>日志分析：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">大概意思是找不到有效数据，查看</span><br><span class="line">/usr/sbin/mysqld,发现是组和拥有者都是root,而我们的mysql执行是以mysql用户执行的。这个时候修改相关文件的组和拥有者。</span><br><span class="line"></span><br><span class="line">一:</span><br><span class="line">[root@izj6c3njvldcpf6rgj4srvz dava]# ls -ld /usr/sbin/mysqld</span><br><span class="line">-rwxr-xr-x 1 root root 850078160 Sep 20 17:32 /usr/sbin/mysqld</span><br><span class="line"></span><br><span class="line">[root@izj6c3njvldcpf6rgj4srvz dava]# chown -R mysql:mysql /usr/sbin/mysqld</span><br><span class="line">[root@izj6c3njvldcpf6rgj4srvz dava]# ls -ld /usr/sbin/mysqld</span><br><span class="line">-rwxr-xr-x 1 mysql mysql 850078160 Sep 20 17:32 /usr/sbin/mysqld</span><br><span class="line"></span><br><span class="line">二，</span><br><span class="line"></span><br><span class="line">[root@izj6c3njvldcpf6rgj4srvz dava]# ls -al /var/lib/mysql</span><br><span class="line">total 188492</span><br><span class="line">drwxr-x--x   6 mysql mysql     4096 Dec  3 23:13 .</span><br><span class="line">drwxr-xr-x. 42 root  root      4096 Dec  3 22:31 ..</span><br><span class="line">-rw-r-----   1 root  root        56 Mar  2  2019 auto.cnf</span><br><span class="line">-rw-r-----   1 mysql mysql        0 Dec  3 22:55 binlog.index</span><br><span class="line">-rw-------   1 root  root      1675 Mar  2  2019 ca-key.pem</span><br><span class="line">-rw-r--r--   1 root  root      1107 Mar  2  2019 ca.pem</span><br><span class="line">-rw-r--r--   1 root  root      1107 Mar  2  2019 client-cert.pem</span><br><span class="line">-rw-------   1 root  root      1675 Mar  2  2019 client-key.pem</span><br><span class="line">-rw-r-----   1 root  root       277 Mar 27  2019 ib_buffer_pool</span><br><span class="line">-rw-r-----   1 root  root  79691776 Apr  4  2019 ibdata1</span><br><span class="line">-rw-r-----   1 root  root  50331648 Apr  4  2019 ib_logfile0</span><br><span class="line">-rw-r-----   1 root  root  50331648 Mar  2  2019 ib_logfile1</span><br><span class="line">-rw-r-----   1 root  root  12582912 Apr  4  2019 ibtmp1</span><br><span class="line">drwxr-x---   2 root  root      4096 Mar  2  2019 mysql</span><br><span class="line">srwxrwxrwx   1 root  root         0 Apr  1  2019 mysql.sock</span><br><span class="line">-rw-------   1 root  root         6 Apr  1  2019 mysql.sock.lock</span><br><span class="line">drwxr-x---   2 root  root      4096 Mar  2  2019 performance_schema</span><br><span class="line">-rw-------   1 root  root      1679 Mar  2  2019 private_key.pem</span><br><span class="line">-rw-r--r--   1 root  root       451 Mar  2  2019 public_key.pem</span><br><span class="line">-rw-r--r--   1 root  root      1107 Mar  2  2019 server-cert.pem</span><br><span class="line">-rw-------   1 root  root      1679 Mar  2  2019 server-key.pem</span><br><span class="line">drwxr-x---   2 root  root     12288 Mar  2  2019 sys</span><br><span class="line">drwxr-x---   2 root  root      4096 Mar 27  2019 wp</span><br><span class="line"></span><br><span class="line">chown mysql:mysql /var/lib/mysql -R</span><br><span class="line"></span><br><span class="line">三:使用服务器初始化数据目录，包括mysql包含初始MySQL授权表的数据库，这些数据库确定如何允许用户连接到服务器</span><br><span class="line">mysqld --initailize --user=mysql</span><br><span class="line"></span><br><span class="line">四，</span><br><span class="line">[root@izj6c3njvldcpf6rgj4srvz dava]# systemctl start mysqld</span><br><span class="line">[root@izj6c3njvldcpf6rgj4srvz dava]# systemctl status mysqld</span><br><span class="line">● mysqld.service - MySQL Server</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/mysqld.service; enabled; vendor preset: disabled)</span><br><span class="line">   Active: active (running) since Tue 2019-12-03 23:15:35 CST; 22s ago</span><br><span class="line">     Docs: man:mysqld(8)</span><br><span class="line">           http://dev.mysql.com/doc/refman/en/using-systemd.html</span><br><span class="line">  Process: 1529 ExecStartPre=/usr/bin/mysqld_pre_systemd (code=exited, status=0/SUCCESS)</span><br><span class="line"> Main PID: 1556 (mysqld)</span><br><span class="line">   Status: &quot;Server is operational&quot;</span><br><span class="line">   CGroup: /system.slice/mysqld.service</span><br><span class="line">           └─1556 /usr/sbin/mysqld</span><br><span class="line">^C</span><br><span class="line">[root@izj6c3njvldcpf6rgj4srvz dava]#</span><br></pre></td></tr></table></figure></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+              <a href="/2019/09/26/PHP之斐波那契数列/" rel="next" title="PHP之斐波那契数列">
+                <i class="fa fa-chevron-left"></i> PHP之斐波那契数列
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+          </div>
+        </div>
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">LYP</p>
+  <div class="site-description motion-element" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+        </div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LYP</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  <script src="/js/utils.js?v=7.3.0"></script>
+  <script src="/js/motion.js?v=7.3.0"></script>
+
+  
+  <script src="/js/affix.js?v=7.3.0"></script>
+  <script src="/js/schemes/pisces.js?v=7.3.0"></script>
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script>
+<script src="/js/post-details.js?v=7.3.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.3.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

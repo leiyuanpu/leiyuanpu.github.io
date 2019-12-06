@@ -220,6 +220,115 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/08/13/关于PHP的flush和ob-flush的机制测试/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LYP">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不知名的程序员">
+    </span>
+      <header class="post-header">
+
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/08/13/关于PHP的flush和ob-flush的机制测试/" class="post-title-link" itemprop="url">关于PHP的flush和ob_flush的机制测试</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-13 17:32:09 / 修改时间：17:33:31" itemprop="dateCreated datePublished" datetime="2019-08-13T17:32:09+08:00">2019-08-13</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          <br>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+            <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">php正常的一个输出过高需要经历的阶段：</span><br><span class="line">echo/print -&gt; php buffer -&gt; tcp buffer -&gt; browser</span><br></pre></td></tr></table></figure>
+<p>一，buffer —- flush()</p>
+<p>buffer是一个内存地址空间,Linux系统默认大小一般为4096(1kb),即一个内存页。主要用于存储速度不同步的设备或者优先级不同的 设备之间传办理数据的区域。通过buffer，可以使进程这间的相互等待变少。这里说一个通俗一点的例子，你打开文本编辑器编辑一个文件的时候，你每输入 一个字符，操作系统并不会立即把这个字符直接写入到磁盘，而是先写入到buffer，当写满了一个buffer的时候，才会把buffer中的数据写入磁 盘，当然当调用内核函数flush()的时候，强制要求把buffer中的脏数据写回磁盘。<br>同样的道理，当执行echo,print的时候，输出并没有立即通过tcp传给客户端浏览器显示, 而是将数据写入php buffer。php output_buffering机制，意味在tcp buffer之前，建立了一新的队列，数据必须经过该队列。当一个php buffer写满的时候，脚本进程会将php buffer中的输出数据交给系统内核交由tcp传给浏览器显示。</p>
+<p>二，php output_buffering — ob_flush()</p>
+<p>默认情况下，php buffer是开启的，而且该buffer默认值是4096，即1kb。你可以通过在php.ini配置文件中找到output_buffering配置.当echo,print等输出用户数据的时候，输出数据都会写入到php output_buffering中，直到output_buffering写满，会将这些数据通过tcp传送给浏览器显示。你也可以通过 ob_start()手动激活php output_buffering机制，使得即便输出超过了1kb数据，也不真的把数据交给tcp传给浏览器，因为ob_start()将php buffer空间设置到了足够大 。只有直到脚本结束，或者调用ob_end_flush函数，才会把数据发送给客户端浏览器。</p>
+<p>这两个函数的使用怕是很多人最迷惑的一个问题，手册上对两个函数的解释也语焉不详，没有明确的指出它们的区别，似乎二者的功能都是刷新输出缓存。但在我们文章一开始的代码中如果讲fush()替换成ob_flush()，程序就再不能正确执行了。显然，它们是有区别的，否则也手册中直接说明其中一个是另外一个函数的别名即可了，没必要分别说明。那么它们的区别到底是什么呢？</p>
+<p>在没有开启缓存时，脚本输出的内容都在服务器端处于等待输出的状态 ，flush()可以将等待输出的内容立即发送到客户端。</p>
+<p>开启缓存后，脚本输出的内容存入了输出缓存中 ，这时没有处于等待输出状态的内容，你直接使用flush()不会向客户端发出任何内容。而 ob_flush()的作用就是将本来存在输出缓存中的内容取出来，设置为等待输出状态，但不会直接发送到客户端 ，这时你就需要先使用 ob_flush()再使用flush()，客户端才能立即获得脚本的输出。</p>
+<p>三，测试<br>3.1，output_buffering=4096，输出较少的数据（少于一个buffer）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">for($i=0; $i&lt;10; $i++)&#123;</span><br><span class="line">    echo $i.&apos;&lt;br&gt;&apos;;</span><br><span class="line">    sleep(1);</span><br><span class="line">&#125;</span><br><span class="line">运行结果：等所有脚本全部运行完成后，才输出，因为数据未满一个buffer的大小。</span><br></pre></td></tr></table></figure></p>
+<p>3.2.output_buffering=4096，输出较少的数据（少于一个buffer），关闭output_buffering，修改php.ini的output_buffering=0<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">for($i=0; $i&lt;10; $i++)&#123;</span><br><span class="line">    echo $i.str_repeat(&quot;&amp;nbsp;&quot;,1000).&apos;&lt;br&gt;&apos;; // 为了浏览器能够显示</span><br><span class="line">    flush();</span><br><span class="line">    sleep(1);</span><br><span class="line">&#125;</span><br><span class="line">运行结果：因为禁用了php buffering，不需要等到脚本运行完毕就可以输出，数据没有在php buffer停留，可以看到断断续续间歇性输出。echo -&gt; tcp buffer -&gt;browser</span><br></pre></td></tr></table></figure></p>
+<p>参考博文：<br><a href="https://blog.csdn.net/fdipzone/article/details/10367837" target="_blank" rel="noopener">https://blog.csdn.net/fdipzone/article/details/10367837</a><br><a href="http://www.laruence.com/2010/04/15/1414.html" target="_blank" rel="noopener">http://www.laruence.com/2010/04/15/1414.html</a><br><a href="https://www.cnblogs.com/zhangyuhang3/p/6873502.html" target="_blank" rel="noopener">https://www.cnblogs.com/zhangyuhang3/p/6873502.html</a><br><a href="http://niliu.me/articles/605.html#comment-2983" target="_blank" rel="noopener">http://niliu.me/articles/605.html#comment-2983</a></p>
+
+          
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/08/02/hexo-gitPage简单的搭建实战/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -494,7 +603,7 @@ hexo help 会列出所有的命令
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

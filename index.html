@@ -220,6 +220,90 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/12/06/centos7安装mysql8的坑/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LYP">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不知名的程序员">
+    </span>
+      <header class="post-header">
+
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/12/06/centos7安装mysql8的坑/" class="post-title-link" itemprop="url">未命名</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-06 16:24:56" itemprop="dateCreated datePublished" datetime="2019-12-06T16:24:56+08:00">2019-12-06</time>
+            </span>
+          
+
+          <br>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+            <p>安装过程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/src</span><br><span class="line">wget https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm</span><br><span class="line"> </span><br><span class="line">#安装yum源</span><br><span class="line">yum localinstall mysql80-community-release-el7-1.noarch.rpm</span><br><span class="line"> </span><br><span class="line">#更新yum源</span><br><span class="line">yum clean all</span><br><span class="line">yum makecache</span><br><span class="line"> </span><br><span class="line">#开始安装MySQL</span><br><span class="line">yum install mysql-community-server</span><br><span class="line"> </span><br><span class="line">#启动MySQL</span><br><span class="line">systemctl start mysqld</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">至此安装完成</span><br><span class="line"></span><br><span class="line">第四步获取密码：</span><br><span class="line"></span><br><span class="line">[root@izj6c3njvldcpf6rgj4srvz src]# cat /var/log/mysqld.log | grep password</span><br><span class="line">2019-12-04T01:59:00.167999Z 5 [Note] [MY-010454] [Server] A temporary password is generated for root@localhost: l4neY,lKxG5D</span><br><span class="line"></span><br><span class="line">#登录MySQL修改mysql用户密码，密码不能太简单</span><br><span class="line">mysql -u root -p</span><br><span class="line">mysql&gt; ALTER USER &apos;root&apos;@&apos;localhost&apos; IDENTIFIED BY &apos;l4neY,lKxG6D&apos;;</span><br></pre></td></tr></table></figure>
+<p>异常：<br>Job for mysqld.service failed because the control process exited with error code. See “systemctl status mysqld.service” and “journalctl -xe” for details.</p>
+<p>打开日志：cat /var/log/mysqld.log<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">2019-12-03T14:55:59.513203Z 0 [System] [MY-010116] [Server] /usr/sbin/mysqld (mysqld 8.0.18) starting as process 1088</span><br><span class="line">2019-12-03T14:55:59.626483Z 1 [ERROR] [MY-011011] [Server] Failed to find valid data directory.</span><br><span class="line">2019-12-03T14:55:59.626637Z 0 [ERROR] [MY-010020] [Server] Data Dictionary initialization failed.</span><br><span class="line">2019-12-03T14:55:59.626707Z 0 [ERROR] [MY-010119] [Server] Aborting</span><br></pre></td></tr></table></figure></p>
+<p>日志分析：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">大概意思是找不到有效数据，查看</span><br><span class="line">/usr/sbin/mysqld,发现是组和拥有者都是root,而我们的mysql执行是以mysql用户执行的。这个时候修改相关文件的组和拥有者。</span><br><span class="line"></span><br><span class="line">一:</span><br><span class="line">[root@izj6c3njvldcpf6rgj4srvz dava]# ls -ld /usr/sbin/mysqld</span><br><span class="line">-rwxr-xr-x 1 root root 850078160 Sep 20 17:32 /usr/sbin/mysqld</span><br><span class="line"></span><br><span class="line">[root@izj6c3njvldcpf6rgj4srvz dava]# chown -R mysql:mysql /usr/sbin/mysqld</span><br><span class="line">[root@izj6c3njvldcpf6rgj4srvz dava]# ls -ld /usr/sbin/mysqld</span><br><span class="line">-rwxr-xr-x 1 mysql mysql 850078160 Sep 20 17:32 /usr/sbin/mysqld</span><br><span class="line"></span><br><span class="line">二，</span><br><span class="line"></span><br><span class="line">[root@izj6c3njvldcpf6rgj4srvz dava]# ls -al /var/lib/mysql</span><br><span class="line">total 188492</span><br><span class="line">drwxr-x--x   6 mysql mysql     4096 Dec  3 23:13 .</span><br><span class="line">drwxr-xr-x. 42 root  root      4096 Dec  3 22:31 ..</span><br><span class="line">-rw-r-----   1 root  root        56 Mar  2  2019 auto.cnf</span><br><span class="line">-rw-r-----   1 mysql mysql        0 Dec  3 22:55 binlog.index</span><br><span class="line">-rw-------   1 root  root      1675 Mar  2  2019 ca-key.pem</span><br><span class="line">-rw-r--r--   1 root  root      1107 Mar  2  2019 ca.pem</span><br><span class="line">-rw-r--r--   1 root  root      1107 Mar  2  2019 client-cert.pem</span><br><span class="line">-rw-------   1 root  root      1675 Mar  2  2019 client-key.pem</span><br><span class="line">-rw-r-----   1 root  root       277 Mar 27  2019 ib_buffer_pool</span><br><span class="line">-rw-r-----   1 root  root  79691776 Apr  4  2019 ibdata1</span><br><span class="line">-rw-r-----   1 root  root  50331648 Apr  4  2019 ib_logfile0</span><br><span class="line">-rw-r-----   1 root  root  50331648 Mar  2  2019 ib_logfile1</span><br><span class="line">-rw-r-----   1 root  root  12582912 Apr  4  2019 ibtmp1</span><br><span class="line">drwxr-x---   2 root  root      4096 Mar  2  2019 mysql</span><br><span class="line">srwxrwxrwx   1 root  root         0 Apr  1  2019 mysql.sock</span><br><span class="line">-rw-------   1 root  root         6 Apr  1  2019 mysql.sock.lock</span><br><span class="line">drwxr-x---   2 root  root      4096 Mar  2  2019 performance_schema</span><br><span class="line">-rw-------   1 root  root      1679 Mar  2  2019 private_key.pem</span><br><span class="line">-rw-r--r--   1 root  root       451 Mar  2  2019 public_key.pem</span><br><span class="line">-rw-r--r--   1 root  root      1107 Mar  2  2019 server-cert.pem</span><br><span class="line">-rw-------   1 root  root      1679 Mar  2  2019 server-key.pem</span><br><span class="line">drwxr-x---   2 root  root     12288 Mar  2  2019 sys</span><br><span class="line">drwxr-x---   2 root  root      4096 Mar 27  2019 wp</span><br><span class="line"></span><br><span class="line">chown mysql:mysql /var/lib/mysql -R</span><br><span class="line"></span><br><span class="line">三:使用服务器初始化数据目录，包括mysql包含初始MySQL授权表的数据库，这些数据库确定如何允许用户连接到服务器</span><br><span class="line">mysqld --initailize --user=mysql</span><br><span class="line"></span><br><span class="line">四，</span><br><span class="line">[root@izj6c3njvldcpf6rgj4srvz dava]# systemctl start mysqld</span><br><span class="line">[root@izj6c3njvldcpf6rgj4srvz dava]# systemctl status mysqld</span><br><span class="line">● mysqld.service - MySQL Server</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/mysqld.service; enabled; vendor preset: disabled)</span><br><span class="line">   Active: active (running) since Tue 2019-12-03 23:15:35 CST; 22s ago</span><br><span class="line">     Docs: man:mysqld(8)</span><br><span class="line">           http://dev.mysql.com/doc/refman/en/using-systemd.html</span><br><span class="line">  Process: 1529 ExecStartPre=/usr/bin/mysqld_pre_systemd (code=exited, status=0/SUCCESS)</span><br><span class="line"> Main PID: 1556 (mysqld)</span><br><span class="line">   Status: &quot;Server is operational&quot;</span><br><span class="line">   CGroup: /system.slice/mysqld.service</span><br><span class="line">           └─1556 /usr/sbin/mysqld</span><br><span class="line">^C</span><br><span class="line">[root@izj6c3njvldcpf6rgj4srvz dava]#</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/09/26/PHP之斐波那契数列/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1188,120 +1272,6 @@
   </article>
 
     
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/09/02/PHP的后期静态绑定static/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="LYP">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="不知名的程序员">
-    </span>
-      <header class="post-header">
-
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/09/02/PHP的后期静态绑定static/" class="post-title-link" itemprop="url">PHP的后期静态绑定static</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-09-02 10:33:04 / 修改时间：10:34:22" itemprop="dateCreated datePublished" datetime="2019-09-02T10:33:04+08:00">2019-09-02</time>
-            </span>
-          
-            
-
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          <br>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-            <p> 自 PHP 5.3.0 起，PHP 增加了一个叫做后期静态绑定的功能，用于在继承范围内引用静态调用的类。准确说，后期静态绑定工作原理是存储了在上一个“非转发调用”（non-forwarding call）的类名。</p>
-<p>当进行静态方法调用时，该类名即为明确指定的那个（通常在 <a href="https://www.php.net/manual/zh/language.oop5.paamayim-nekudotayim.php" target="_blank" rel="noopener"><em>::</em></a> 运算符左侧部分）；当进行非静态方法调用时，即为该对象所属的类。</p>
-<p>所谓的“转发调用”（forwarding call）指的是通过以下几种方式进行的静态调用：<em>self::</em>，<em>parent::</em>，<em>static::</em> 以及 <a href="https://www.php.net/manual/zh/function.forward-static-call.php" target="_blank" rel="noopener">forward_static_call()</a>。可用 <a href="https://www.php.net/manual/zh/function.get-called-class.php" target="_blank" rel="noopener">get_called_class()</a> 函数来得到被调用的方法所在的类名，<em>static::</em> 则指出了其范围。该功能从语言内部角度考虑被命名为“后期静态绑定”。</p>
-<p>“后期绑定”的意思是说，<em>static::</em> 不再被解析为定义当前方法所在的类，而是在实际运行时计算的。也可以称之为“静态绑定”，因为它可以用于（但不限于）静态方法的调用。</p>
-<p>上面是PHP文档里对后期静态绑定的解释里面有几个重点：<br>1，后期静态绑定原理是存储了在上一个”非转发调用”的类名。<br>2，转发调用是通过<em>self::</em>，<em>parent::</em>，<em>static::</em> 以及 <a href="https://www.php.net/manual/zh/function.forward-static-call.php" target="_blank" rel="noopener">forward_static_call()</a>实现的<br>3，static::不再被解析为方法的当前类，而是通过实际运算计算出来的。<br>4，当进行静态方法调用时，该类名即为明确指定的那个 如（C::getName）类名就是C<br>5，；当进行非静态方法调用时，即为该对象所属的类 如($this-&gt;getName)类 这时候指的应该是$this所属的实例化对象。</p>
-<p>转发调用 :</p>
-<p>指的是通过以下几种方式进行的静态调用：self::，parent::，static:: 以及 forward_static_call()。<br>非转发调用 ：</p>
-<p>明确指定类名的静态调用（例如A::test()）<br>非静态调用（例如$A-&gt;test()）</p>
-<p>场景一：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class A &#123;</span><br><span class="line">    public static function who() &#123;</span><br><span class="line">        echo __CLASS__;</span><br><span class="line">    &#125;</span><br><span class="line">    public static function test() &#123;</span><br><span class="line">        static::who(); // 后期静态绑定从这里开始</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class B extends A &#123;</span><br><span class="line">    public static function who() &#123;</span><br><span class="line">        echo __CLASS__;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">B::test(); //B</span><br><span class="line">分析：B::test时A类的test方法会通过 static::who 进修转发调用，这时候static::指向的是B类而不是A类</span><br></pre></td></tr></table></figure></p>
-<p>场景二<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">class A &#123;</span><br><span class="line">    private function foo() &#123;</span><br><span class="line">        echo &quot;success!\n&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    public function test() &#123;</span><br><span class="line">        $this-&gt;foo();</span><br><span class="line">        static::foo();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class B extends A &#123;</span><br><span class="line">   /* foo() will be copied to B, hence its scope will still be A and</span><br><span class="line">    * the call be successful */</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class C extends A &#123;</span><br><span class="line">    private function foo() &#123;</span><br><span class="line">        /* original method is replaced; the scope of the new one is C */</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$b = new B();</span><br><span class="line">$b-&gt;test();</span><br><span class="line">输出：</span><br><span class="line">success!</span><br><span class="line">success!</span><br><span class="line">$c = new C();</span><br><span class="line">$c-&gt;test();   //fails</span><br><span class="line">输出：</span><br><span class="line">success!</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Fatal error:  Call to private method C::foo() from context &apos;A&apos; in /tmp/test.php on line 9</span><br></pre></td></tr></table></figure></p>
-<p>总结：在非静态环境下，所调用的类即为该对象实例所属的类。由于 $this-&gt; 会在同一作用范围内尝试调用私有方法（即A类中的foo方法），而 static:: 则可能给出不同结果会转发调用（这时候会调用到C中的foo方法，由于它是私有的于是报错）。另一个区别是 static:: 只能用于静态属性。</p>
-<p>场景三：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">class A &#123;</span><br><span class="line">    public static function foo() &#123;</span><br><span class="line">        static::who();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static function who() &#123;</span><br><span class="line">        echo __CLASS__.&quot;\n&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class B extends A &#123;</span><br><span class="line">    public static function test() &#123;</span><br><span class="line">        A::foo();</span><br><span class="line">        parent::foo();</span><br><span class="line">        self::foo();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static function who() &#123;</span><br><span class="line">        echo __CLASS__.&quot;\n&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class C extends B &#123;</span><br><span class="line">    public static function who() &#123;</span><br><span class="line">        echo __CLASS__.&quot;\n&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">C::test();//A C C</span><br></pre></td></tr></table></figure></p>
-<p>总结：后期静态绑定的解析会一直到取得一个完全解析了的静态调用为止。另一方面，如果静态调用使用 parent:: 或者 self:: 将转发调用信息，如上面场景三，他最终实际上转发给了C这个类。static关键字最终先会转发到他第一个调用的类（如这里的C），然后再一层层的往上找，假如这时候把C中的who方法注释，这时候结果就会变成（<strong>ABB</strong>）。</p>
-<p>获取实例化对象的使用self和static的对比<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class Base</span><br><span class="line">&#123;</span><br><span class="line">    private static $instance;</span><br><span class="line">    public $name;</span><br><span class="line"></span><br><span class="line">    public static function getInstance()</span><br><span class="line">    &#123;</span><br><span class="line">        $class = get_called_class(); //动态获取调用类</span><br><span class="line">        if (!isset(self::$instance[$class]))</span><br><span class="line">        &#123;</span><br><span class="line">            self::$instance[$class] = new self(); //获取的当前类即base类</span><br><span class="line">        &#125;</span><br><span class="line">        return self::$instance[$class];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class A extends Base</span><br><span class="line">&#123;</span><br><span class="line">    public function who()</span><br><span class="line">    &#123;</span><br><span class="line">        return __class__;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class B extends Base</span><br><span class="line">&#123;</span><br><span class="line">    public function who()</span><br><span class="line">    &#123;</span><br><span class="line">        return __class__;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var_dump(A::getInstance()); //</span><br><span class="line">// D:\www\my_project\test\a.php:34:</span><br><span class="line">// object(Base)[1]</span><br><span class="line">//   public &apos;name&apos; =&gt; null</span><br><span class="line">var_dump(B::getInstance());</span><br><span class="line">// D:\www\my_project\test\a.php:34:</span><br><span class="line">// object(Base)[1]</span><br><span class="line">//   public &apos;name&apos; =&gt; null</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class Base</span><br><span class="line">&#123;</span><br><span class="line">    private static $instance;</span><br><span class="line">    public $name;</span><br><span class="line"></span><br><span class="line">    public static function getInstance()</span><br><span class="line">    &#123;</span><br><span class="line">        $class = get_called_class(); //动态获取调用类</span><br><span class="line">        if (!isset(self::$instance[$class]))</span><br><span class="line">        &#123;</span><br><span class="line">            self::$instance[$class] = new static();</span><br><span class="line"> //由于转发调用所以会通过实际的调用计算来获取当前的对象</span><br><span class="line">        &#125;</span><br><span class="line">        return self::$instance[$class];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class A extends Base</span><br><span class="line">&#123;</span><br><span class="line">    public function who()</span><br><span class="line">    &#123;</span><br><span class="line">        return __class__;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class B extends Base</span><br><span class="line">&#123;</span><br><span class="line">    public function who()</span><br><span class="line">    &#123;</span><br><span class="line">        return __class__;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">var_dump(A::getInstance()); //</span><br><span class="line">// D:\www\my_project\test\a.php:34:</span><br><span class="line">// object(A)[1]</span><br><span class="line">//   public &apos;name&apos; =&gt; null</span><br><span class="line">var_dump(B::getInstance());</span><br><span class="line">// D:\www\my_project\test\a.php:38:</span><br><span class="line">// object(B)[2]</span><br><span class="line">//   public &apos;name&apos; =&gt; null</span><br></pre></td></tr></table></figure>
-<p>上面可以发现当我们使用self的时候永远获取的都是Base这个类，而使用static的时候就可以动态的获取调用对象了。</p>
-
-          
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </section>
 
   
@@ -1339,7 +1309,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
