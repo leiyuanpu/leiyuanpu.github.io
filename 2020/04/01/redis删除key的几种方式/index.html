@@ -57,14 +57,19 @@
   };
 </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="不知名的程序员">
-<meta property="og:url" content="https://leiyuanpu.github.io/archives/index.html">
+  <meta name="description" content="123456789101112131,批量删除：redis-cli -n 0 -a  pw  keys &amp;quot;*-no-exist-uid&amp;quot; | xargs redis-cli -a pw delpw:redis的连接密码&amp;quot;*-no-exist-uid&amp;quot;：匹配的值，后缀是-no-exist-uid的key都会给删除-n:指定的数据库 默认是0库2,单个删除del">
+<meta name="keywords" content="Redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis删除key的几种方式">
+<meta property="og:url" content="https://leiyuanpu.github.io/2020/04/01/redis删除key的几种方式/index.html">
 <meta property="og:site_name" content="不知名的程序员">
+<meta property="og:description" content="123456789101112131,批量删除：redis-cli -n 0 -a  pw  keys &amp;quot;*-no-exist-uid&amp;quot; | xargs redis-cli -a pw delpw:redis的连接密码&amp;quot;*-no-exist-uid&amp;quot;：匹配的值，后缀是-no-exist-uid的key都会给删除-n:指定的数据库 默认是0库2,单个删除del">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-04-02T07:18:23.614Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="不知名的程序员">
-  <link rel="canonical" href="https://leiyuanpu.github.io/archives/">
+<meta name="twitter:title" content="redis删除key的几种方式">
+<meta name="twitter:description" content="123456789101112131,批量删除：redis-cli -n 0 -a  pw  keys &amp;quot;*-no-exist-uid&amp;quot; | xargs redis-cli -a pw delpw:redis的连接密码&amp;quot;*-no-exist-uid&amp;quot;：匹配的值，后缀是-no-exist-uid的key都会给删除-n:指定的数据库 默认是0库2,单个删除del">
+  <link rel="canonical" href="https://leiyuanpu.github.io/2020/04/01/redis删除key的几种方式/">
 
 
 <script id="page.configurations">
@@ -73,7 +78,7 @@
   };
 </script>
 
-  <title>归档 | 不知名的程序员</title>
+  <title>redis删除key的几种方式 | 不知名的程序员</title>
   
 
 
@@ -112,7 +117,7 @@
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -189,7 +194,7 @@
         
         
           
-          <li class="menu-item menu-item-archives menu-item-active">
+          <li class="menu-item menu-item-archives">
       
     
 
@@ -210,431 +215,136 @@
         <div class="content-wrap">
             
 
-    
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
-      <span class="archive-page-counter">
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2020/04/01/redis删除key的几种方式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LYP">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不知名的程序员">
+    </span>
+      <header class="post-header">
+
         
+          <h1 class="post-title" itemprop="name headline">redis删除key的几种方式
+
+              
+            
+          </h1>
         
-        
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-04-01 10:37:38" itemprop="dateCreated datePublished" datetime="2020-04-01T10:37:38+08:00">2020-04-01</time>
+            </span>
           
-        
-        嗯..! 目前共计 26 篇日志。 继续努力。
-      </span>
-      
+            
 
-        
-        
-        
-
-        
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-04-02 15:18:23" itemprop="dateModified" datetime="2020-04-02T15:18:23+08:00">2020-04-02</time>
+              </span>
+            
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2020">2020</h1>
-          </div>
-        
-        
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a></span>
 
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2020/04/01/redis删除key的几种方式/" itemprop="url">
-            
-              <span itemprop="name">redis删除key的几种方式</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-04-01T10:37:38+08:00"
-              content="2020-04-01">
-          04-01
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
+                
+                
+              
+            </span>
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2019">2019</h1>
-          </div>
-        
-        
 
-        
+          <br>
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+        </div>
+      </header>
 
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2019/12/06/centos7安装mysql8的坑/" itemprop="url">
-            
-              <span itemprop="name">centos7安装mysql8的坑</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-12-06T16:07:49+08:00"
-              content="2019-12-06">
-          12-06
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2019/09/26/PHP之斐波那契数列/" itemprop="url">
-            
-              <span itemprop="name">PHP之斐波那契数列</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-09-26T17:35:17+08:00"
-              content="2019-09-26">
-          09-26
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2019/09/26/PHP之递归函数/" itemprop="url">
-            
-              <span itemprop="name">PHP之递归函数</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-09-26T17:24:39+08:00"
-              content="2019-09-26">
-          09-26
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2019/09/26/快速排序/" itemprop="url">
-            
-              <span itemprop="name">快速排序</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-09-26T15:37:06+08:00"
-              content="2019-09-26">
-          09-26
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2019/09/26/冒泡排序优化版/" itemprop="url">
-            
-              <span itemprop="name">冒泡排序优化版</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-09-26T11:51:26+08:00"
-              content="2019-09-26">
-          09-26
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2019/09/24/update信息不能包含子查询的信息/" itemprop="url">
-            
-              <span itemprop="name">redis删除key的几种方式</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-09-24T10:37:38+08:00"
-              content="2019-09-24">
-          09-24
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2019/09/24/字符串反转算法/" itemprop="url">
-            
-              <span itemprop="name">字符串反转算法</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-09-24T10:37:38+08:00"
-              content="2019-09-24">
-          09-24
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2019/09/24/字符串朴素的模式匹配算法/" itemprop="url">
-            
-              <span itemprop="name">字符串朴素的模式匹配算法</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-09-24T10:16:24+08:00"
-              content="2019-09-24">
-          09-24
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2019/09/19/PostMan工具之tests项设置/" itemprop="url">
-            
-              <span itemprop="name">PostMan工具之tests项设置</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-09-19T14:42:07+08:00"
-              content="2019-09-19">
-          09-19
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">1,批量删除：</span><br><span class="line">redis-cli -n 0 -a  pw  keys &quot;*-no-exist-uid&quot; | xargs redis-cli -a pw del</span><br><span class="line">pw:redis的连接密码</span><br><span class="line">&quot;*-no-exist-uid&quot;：匹配的值，后缀是-no-exist-uid的key都会给删除</span><br><span class="line">-n:指定的数据库 默认是0库</span><br><span class="line"></span><br><span class="line">2,单个删除</span><br><span class="line">del key</span><br><span class="line">3,删除当前数据库中的所有Key  </span><br><span class="line">flushdb  </span><br><span class="line">4,删除所有数据库中的key  </span><br><span class="line">flushall</span><br></pre></td></tr></table></figure>
 
     </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+        
+        <div class="post-tags">
+            <a href="/tags/Redis/" rel="tag"># Redis</a>
+          
+        </div>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+              <a href="/2019/12/06/centos7安装mysql8的坑/" rel="next" title="centos7安装mysql8的坑">
+                <i class="fa fa-chevron-left"></i> centos7安装mysql8的坑
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+          </div>
+        </div>
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><a class="extend next" rel="next" href="/archives/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
-
+  </div>
 
 
           </div>
           
+
 
         </div>
           
@@ -817,6 +527,10 @@
 
 
   
+  <script src="/js/scrollspy.js?v=7.3.0"></script>
+<script src="/js/post-details.js?v=7.3.0"></script>
+
+
 
   <script src="/js/next-boot.js?v=7.3.0"></script>
 
