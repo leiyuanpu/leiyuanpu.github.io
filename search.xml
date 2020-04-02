@@ -67,7 +67,7 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[redis删除key的几种方式]]></title>
+    <title><![CDATA[You can't specify target table for update in FROM clause]]></title>
     <url>%2F2019%2F09%2F24%2Fupdate%E4%BF%A1%E6%81%AF%E4%B8%8D%E8%83%BD%E5%8C%85%E5%90%AB%E5%AD%90%E6%9F%A5%E8%AF%A2%E7%9A%84%E4%BF%A1%E6%81%AF%2F</url>
     <content type="text"><![CDATA[12345678910111213141516今天通过命令行想删除一些重复的数据结果执行命令的时候报错了：执行的命令：DELETE FROM cms_mail where m_create_time &lt; 1585801800 and m_mail_uid in (select m_mail_uid from cms_mail group by m_to_email, m_mail_uid having count(m_mail_uid)&gt; 1)结果：You can&apos;t specify target table for update in FROM clause解决方案：DELETE FROM cms_mail where m_create_time &lt; 1585801800 and m_mail_uid in (select m_mail_uid from ( select m_mail_uid from cms_mail group by m_to_email, m_mail_uid having count(m_mail_uid)&gt; 1) as a)原因是mysql不支持你修改的值包含子查询的内容。把子查询语句变成一个临时表来处理就ok了]]></content>
       <categories>
