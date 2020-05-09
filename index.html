@@ -220,6 +220,277 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2020/05/09/MySQL分类排名问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LYP">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不知名的程序员">
+    </span>
+      <header class="post-header">
+
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/05/09/MySQL分类排名问题/" class="post-title-link" itemprop="url">未命名</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-05-09 15:00:55" itemprop="dateCreated datePublished" datetime="2020-05-09T15:00:55+08:00">2020-05-09</time>
+            </span>
+          
+
+          <br>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+            <p>实现对学生按课程依成绩高低进行排序</p>
+<p>建表：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `test` (</span><br><span class="line">  `id` int(11) NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `name` varchar(20) DEFAULT NULL,</span><br><span class="line">  `course` varchar(20) DEFAULT NULL,</span><br><span class="line">  `score` int(11) DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`)</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;</span><br></pre></td></tr></table></figure></p>
+<p>数据：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1	张三	语文	80</span><br><span class="line">2	李四	语文	90</span><br><span class="line">3	王五	语文	93</span><br><span class="line">4	张三	数学	77</span><br><span class="line">5	李四	数学	68</span><br><span class="line">6	王五	数学	99</span><br><span class="line">7	张三	英语	90</span><br><span class="line">8	李四	英语	50</span><br><span class="line">9	王五	英语	89</span><br></pre></td></tr></table></figure></p>
+<p>##子查询<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">	*, (</span><br><span class="line">		SELECT</span><br><span class="line">			COUNT(b.score) + 1</span><br><span class="line">		FROM</span><br><span class="line">			test b</span><br><span class="line">		WHERE</span><br><span class="line">			a. NAME = b. NAME</span><br><span class="line">		AND a.score &lt; b.score</span><br><span class="line">	) AS &apos;rank&apos;</span><br><span class="line">FROM</span><br><span class="line">	test a</span><br><span class="line">ORDER BY</span><br><span class="line">	NAME,</span><br><span class="line">	rank</span><br><span class="line"></span><br><span class="line">查询结果：</span><br><span class="line">7	张三	英语	90	1</span><br><span class="line">1	张三	语文	80	2</span><br><span class="line">4	张三	数学	77	3</span><br><span class="line">2	李四	语文	90	1</span><br><span class="line">5	李四	数学	68	2</span><br><span class="line">8	李四	英语	50	3</span><br><span class="line">6	王五	数学	99	1</span><br><span class="line">3	王五	语文	93	2</span><br><span class="line">9	王五	英语	89	3</span><br></pre></td></tr></table></figure></p>
+<p>#自连接<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">SELECT </span><br><span class="line">    a.*, COUNT(b.score)+1 AS &apos;rank&apos;</span><br><span class="line">FROM </span><br><span class="line">    test a LEFT JOIN test b ON (a.name = b.name  AND a.score &lt; b.score)</span><br><span class="line">GROUP BY </span><br><span class="line">    a.name, a.score,a.course</span><br><span class="line">ORDER BY </span><br><span class="line">    a.name, COUNT(b.score) asc</span><br><span class="line"></span><br><span class="line">查询结果：</span><br><span class="line">7	张三	英语	90	1</span><br><span class="line">1	张三	语文	80	2</span><br><span class="line">4	张三	数学	77	3</span><br><span class="line">2	李四	语文	90	1</span><br><span class="line">5	李四	数学	68	2</span><br><span class="line">8	李四	英语	50	3</span><br><span class="line">6	王五	数学	99	1</span><br><span class="line">3	王五	语文	93	2</span><br><span class="line">9	王五	英语	89	3</span><br></pre></td></tr></table></figure></p>
+<p>参考：<br><a href="https://mp.weixin.qq.com/s/s8EiV-oKNR4n9Goe4gIAOw" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/s8EiV-oKNR4n9Goe4gIAOw</a></p>
+
+          
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2020/05/09/MySQL获取分组后的TOP1和TOPN记录/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LYP">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不知名的程序员">
+    </span>
+      <header class="post-header">
+
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/05/09/MySQL获取分组后的TOP1和TOPN记录/" class="post-title-link" itemprop="url">未命名</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-05-09 15:00:08" itemprop="dateCreated datePublished" datetime="2020-05-09T15:00:08+08:00">2020-05-09</time>
+            </span>
+          
+
+          <br>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+            <p>有时会碰到一些需求，查询分组后的最大值，最小值所在的整行记录或者分组后的top n行的记录，在一些别的数据库可能有窗口函数可以方面的查出来，但是MySQL没有这些函数,没有直接的方法可以查出来，可通过以下的方法来查询。</p>
+<h2 id="建表"><a href="#建表" class="headerlink" title="建表"></a>建表</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `test1` (</span><br><span class="line">  `id` int(11) NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `name` varchar(20) DEFAULT NULL,</span><br><span class="line">  `course` varchar(20) DEFAULT NULL,</span><br><span class="line">  `score` int(11) DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`)</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8</span><br></pre></td></tr></table></figure>
+<p>##插入数据<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">insert into test1(name,course,score)</span><br><span class="line">values</span><br><span class="line">(&apos;张三&apos;,&apos;语文&apos;,80),</span><br><span class="line">(&apos;李四&apos;,&apos;语文&apos;,90),</span><br><span class="line">(&apos;王五&apos;,&apos;语文&apos;,93),</span><br><span class="line">(&apos;张三&apos;,&apos;数学&apos;,77),</span><br><span class="line">(&apos;李四&apos;,&apos;数学&apos;,68),</span><br><span class="line">(&apos;王五&apos;,&apos;数学&apos;,99),</span><br><span class="line">(&apos;张三&apos;,&apos;英语&apos;,90),</span><br><span class="line">(&apos;李四&apos;,&apos;英语&apos;,50),</span><br><span class="line">(&apos;王五&apos;,&apos;英语&apos;,89);</span><br></pre></td></tr></table></figure></p>
+<p>##查看结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">root:test&gt;  select * from test1;</span><br><span class="line">+----+--------+--------+-------+</span><br><span class="line">| id | name   | course | score |</span><br><span class="line">+----+--------+--------+-------+</span><br><span class="line">|  1 | 张三   | 语文   |    80 |</span><br><span class="line">|  2 | 李四   | 语文   |    90 |</span><br><span class="line">|  3 | 王五   | 语文   |    93 |</span><br><span class="line">|  4 | 张三   | 数学   |    77 |</span><br><span class="line">|  5 | 李四   | 数学   |    68 |</span><br><span class="line">|  6 | 王五   | 数学   |    99 |</span><br><span class="line">|  7 | 张三   | 英语   |    90 |</span><br><span class="line">|  8 | 李四   | 英语   |    50 |</span><br><span class="line">|  9 | 王五   | 英语   |    89 |</span><br><span class="line">+----+--------+--------+-------+</span><br></pre></td></tr></table></figure></p>
+<p>##TOP 1<br>查询每门课程分数最高的学生以及成绩</p>
+<p>1、使用自连接【推荐】<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">root:test&gt; select a.name,a.course,a.score from</span><br><span class="line">    -&gt; test1 a</span><br><span class="line">    -&gt; join (select course,max(score) score from test1 group by course) b </span><br><span class="line">    -&gt; on a.course=b.course and a.score=b.score;</span><br><span class="line">+--------+--------+-------+</span><br><span class="line">| name   | course | score |</span><br><span class="line">+--------+--------+-------+</span><br><span class="line">| 王五   | 语文   |    93 |</span><br><span class="line">| 王五   | 数学   |    99 |</span><br><span class="line">| 张三   | 英语   |    90 |</span><br><span class="line">+--------+--------+-------+</span><br><span class="line">rows in set (0.00 sec)</span><br></pre></td></tr></table></figure></p>
+<p>2，使用相关子查询<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root:test&gt; select name,course,score from test1 a</span><br><span class="line">    -&gt; where score=(select max(score) from test1 where a.course=test1.course);</span><br><span class="line">+--------+--------+-------+</span><br><span class="line">| name   | course | score |</span><br><span class="line">+--------+--------+-------+</span><br><span class="line">| 王五   | 语文   |    93 |</span><br><span class="line">| 王五   | 数学   |    99 |</span><br><span class="line">| 张三   | 英语   |    90 |</span><br><span class="line">+--------+--------+-------+</span><br><span class="line">rows in set (0.00 sec)</span><br></pre></td></tr></table></figure></p>
+<p>或者<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root:test&gt; select name,course,score from test1 a</span><br><span class="line">    -&gt; where not exists(select 1 from test1 where a.course=test1.course and a.score &lt; test1.score);</span><br><span class="line">+--------+--------+-------+</span><br><span class="line">| name   | course | score |</span><br><span class="line">+--------+--------+-------+</span><br><span class="line">| 王五   | 语文   |    93 |</span><br><span class="line">| 王五   | 数学   |    99 |</span><br><span class="line">| 张三   | 英语   |    90 |</span><br><span class="line">+--------+--------+-------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure></p>
+<p>##TOP N<br>N&gt;=1</p>
+<p>查询每门课程前两名的学生以及成绩<br>1、使用union all</p>
+<p>如果结果集比较小，可以用程序查询单个分组结果后拼凑，也可以使用union all<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">root:test&gt; (select name,course,score from test1 where course=&apos;语文&apos; order by score desc limit 2)</span><br><span class="line">    -&gt; union all</span><br><span class="line">    -&gt; (select name,course,score from test1 where course=&apos;数学&apos; order by score desc limit 2)</span><br><span class="line">    -&gt; union all</span><br><span class="line">    -&gt; (select name,course,score from test1 where course=&apos;英语&apos; order by score desc limit 2);</span><br><span class="line">+--------+--------+-------+</span><br><span class="line">| name   | course | score |</span><br><span class="line">+--------+--------+-------+</span><br><span class="line">| 王五   | 语文   |    93 |</span><br><span class="line">| 李四   | 语文   |    90 |</span><br><span class="line">| 王五   | 数学   |    99 |</span><br><span class="line">| 张三   | 数学   |    77 |</span><br><span class="line">| 张三   | 英语   |    90 |</span><br><span class="line">| 王五   | 英语   |    89 |</span><br><span class="line">+--------+--------+-------+</span><br><span class="line">rows in set (0.01 sec)</span><br></pre></td></tr></table></figure></p>
+<p>2、自身左连接<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">root:test&gt; select a.name,a.course,a.score</span><br><span class="line">    -&gt; from test1 a left join test1 b on a.course=b.course and a.score&lt;b.score</span><br><span class="line">    -&gt; group by a.name,a.course,a.score</span><br><span class="line">    -&gt; having count(b.id)&lt;2</span><br><span class="line">    -&gt; order by a.course,a.score desc;</span><br><span class="line">+--------+--------+-------+</span><br><span class="line">| name   | course | score |</span><br><span class="line">+--------+--------+-------+</span><br><span class="line">| 王五   | 数学   |    99 |</span><br><span class="line">| 张三   | 数学   |    77 |</span><br><span class="line">| 张三   | 英语   |    90 |</span><br><span class="line">| 王五   | 英语   |    89 |</span><br><span class="line">| 王五   | 语文   |    93 |</span><br><span class="line">| 李四   | 语文   |    90 |</span><br><span class="line">+--------+--------+-------+</span><br><span class="line">rows in set (0.00 sec)</span><br></pre></td></tr></table></figure></p>
+<p>3、相关子查询<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">root:test&gt; select *</span><br><span class="line">    -&gt; from test1 a</span><br><span class="line">    -&gt; where (select count(*) from test1 where course=a.course and score&gt;a.score) &lt; 2</span><br><span class="line">    -&gt; order by a.course,a.score desc;</span><br><span class="line">+----+--------+--------+-------+</span><br><span class="line">| id | name   | course | score |</span><br><span class="line">+----+--------+--------+-------+</span><br><span class="line">|  6 | 王五   | 数学   |    99 |</span><br><span class="line">|  4 | 张三   | 数学   |    77 |</span><br><span class="line">|  7 | 张三   | 英语   |    90 |</span><br><span class="line">|  9 | 王五   | 英语   |    89 |</span><br><span class="line">|  3 | 王五   | 语文   |    93 |</span><br><span class="line">|  2 | 李四   | 语文   |    90 |</span><br><span class="line">+----+--------+--------+-------+</span><br><span class="line">6 rows in set (0.01 sec)</span><br></pre></td></tr></table></figure></p>
+<p>4、使用用户变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">root:test&gt; set @num := 0, @course := &apos;&apos;;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">root:test&gt; </span><br><span class="line">root:test&gt; select name, course, score</span><br><span class="line">    -&gt; from (</span><br><span class="line">    -&gt;    select name, course, score,</span><br><span class="line">    -&gt;       @num := if(@course = course, @num + 1, 1) as row_number,</span><br><span class="line">    -&gt;       @course := course as dummy</span><br><span class="line">    -&gt;   from test1</span><br><span class="line">    -&gt;   order by course, score desc</span><br><span class="line">    -&gt; ) as x where x.row_number &lt;= 2;</span><br><span class="line">+--------+--------+-------+</span><br><span class="line">| name   | course | score |</span><br><span class="line">+--------+--------+-------+</span><br><span class="line">| 王五   | 数学   |    99 |</span><br><span class="line">| 张三   | 数学   |    77 |</span><br><span class="line">| 张三   | 英语   |    90 |</span><br><span class="line">| 王五   | 英语   |    89 |</span><br><span class="line">| 王五   | 语文   |    93 |</span><br><span class="line">| 李四   | 语文   |    90 |</span><br><span class="line">+--------+--------+-------+</span><br><span class="line">6 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure></p>
+<p>转载：<br><a href="https://www.cnblogs.com/prayer21/p/6029694.html" target="_blank" rel="noopener">https://www.cnblogs.com/prayer21/p/6029694.html</a></p>
+
+          
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2020/05/09/Laravel+vue广播实战/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LYP">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不知名的程序员">
+    </span>
+      <header class="post-header">
+
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/05/09/Laravel+vue广播实战/" class="post-title-link" itemprop="url">未命名</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-05-09 14:58:22" itemprop="dateCreated datePublished" datetime="2020-05-09T14:58:22+08:00">2020-05-09</time>
+            </span>
+          
+
+          <br>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+            <p>#背景：</p>
+<p>   最近需要做个服务端消息推送的事情，首先就考虑到了Laravel自带的广播功能，它是利用redis的发布订阅功能和前端利用node.js实现的一套集合了Websocket 的功能</p>
+<p>前置条件：<br>后端：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1，安装redis扩展</span><br><span class="line">      composer require predis/predis</span><br><span class="line">2，在config/app.php中打开注释：</span><br><span class="line">      App\Providers\BroadcastServiceProvider::class,</span><br><span class="line">3，在.env中</span><br><span class="line">    APP_URL=http://your_domain.com  #域名</span><br><span class="line">    APP_NAME=YourAppName   #默认laravel即可</span><br><span class="line">    QUEUE_CONNECTION=redis  #redis队列</span><br><span class="line">    BROADCAST_DRIVER=redis  #broadcast的驱动使用redis</span><br></pre></td></tr></table></figure></p>
+<p>前端：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1,npm Install</span><br><span class="line">2,npm install -g laravel-echo-server #https://github.com/tlaverdure/laravel-echo-server</span><br><span class="line">3,npm install --save socket.io-client</span><br></pre></td></tr></table></figure></p>
+<p>#公有频道<br>1,后端代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">namespace App\Events;</span><br><span class="line"></span><br><span class="line">use Illuminate\Broadcasting\Channel;</span><br><span class="line">use Illuminate\Queue\SerializesModels;</span><br><span class="line">use Illuminate\Foundation\Events\Dispatchable;</span><br><span class="line">use Illuminate\Broadcasting\InteractsWithSockets;</span><br><span class="line">use Illuminate\Contracts\Broadcasting\ShouldBroadcast;</span><br><span class="line"></span><br><span class="line">class PublicEvent implements ShouldBroadcast</span><br><span class="line">&#123;</span><br><span class="line">    use Dispatchable, InteractsWithSockets, SerializesModels;</span><br><span class="line">    /**</span><br><span class="line">     * Create a new event instance.</span><br><span class="line">     *</span><br><span class="line">     * @return void</span><br><span class="line">     */</span><br><span class="line">    public $msg = &apos;&apos;;</span><br><span class="line">    public function __construct($msg)</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;msg = $msg;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * Get the channels the event should broadcast on.</span><br><span class="line">     *</span><br><span class="line">     * @return \Illuminate\Broadcasting\Channel|array</span><br><span class="line">     */</span><br><span class="line">    public function broadcastOn()</span><br><span class="line">    &#123;</span><br><span class="line">        return new Channel(&apos;public&apos;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">//    public function broadcastWith()</span><br><span class="line">//    &#123;</span><br><span class="line">//        return [</span><br><span class="line">//            &apos;data&apos; =&gt; &apos;this is public&apos;</span><br><span class="line">//        ];</span><br><span class="line">//    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>2,前端代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">import Echo from &apos;laravel-echo&apos;</span><br><span class="line"></span><br><span class="line">window.io = require(&apos;socket.io-client&apos;);</span><br><span class="line">window.Echo = new Echo(&#123;</span><br><span class="line">    broadcaster: &apos;socket.io&apos;,</span><br><span class="line">    host: window.location.hostname + &apos;:6001&apos;,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">window.Echo.channel(&apos;public&apos;)</span><br><span class="line">    .listen(&apos;PublicEvent&apos;, (e) =&gt; &#123;</span><br><span class="line">        console.log(e);</span><br><span class="line">    &#125;);</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure></p>
+<p>3，打开页面在console,即可以看到我们发送的数据<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;msg: &quot;this is public&quot;, socket: null&#125;</span><br><span class="line">msg: &quot;this is public&quot;</span><br><span class="line">socket: null</span><br><span class="line">__proto__: Object</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>#私有频道<br>PrivateEvent：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">namespace App\Events;</span><br><span class="line"></span><br><span class="line">use App\Models\UserModel;</span><br><span class="line">use Illuminate\Queue\SerializesModels;</span><br><span class="line">use Illuminate\Broadcasting\PrivateChannel;</span><br><span class="line">use Illuminate\Foundation\Events\Dispatchable;</span><br><span class="line">use Illuminate\Broadcasting\InteractsWithSockets;</span><br><span class="line">use Illuminate\Contracts\Broadcasting\ShouldBroadcast;</span><br><span class="line"></span><br><span class="line">class PrivateEvent implements ShouldBroadcast</span><br><span class="line">&#123;</span><br><span class="line">    use Dispatchable, InteractsWithSockets, SerializesModels;</span><br><span class="line"></span><br><span class="line">    public $user;</span><br><span class="line">    public $userId = &apos;&apos;;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * Create a new event instance.</span><br><span class="line">     *</span><br><span class="line">     * @return void</span><br><span class="line">     */</span><br><span class="line">    public function __construct(UserModel $user)</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">        $this-&gt;user = $user;</span><br><span class="line">        $this-&gt;userId = 3590;</span><br><span class="line"></span><br><span class="line">        // dd(&apos;user.&apos; . $this-&gt;user-&gt;u_id);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * Get the channels the event should broadcast on.</span><br><span class="line">     *</span><br><span class="line">     * @return \Illuminate\Broadcasting\Channel|array</span><br><span class="line">     */</span><br><span class="line">    public function broadcastOn()</span><br><span class="line">    &#123;</span><br><span class="line">        // dd(Auth::user());</span><br><span class="line">        return new PrivateChannel(&apos;user.&apos; . $this-&gt;userId);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">// 精细化返回的数据，如果加了这个函数，公有属性才不会返回而是以这个函数内放回的字段为主</span><br><span class="line">//    public function broadcastWith()</span><br><span class="line">//    &#123;</span><br><span class="line">//        return [</span><br><span class="line">//            &apos;data&apos; =&gt; &apos;2424&apos;,</span><br><span class="line">//        ];</span><br><span class="line">//    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>BroadcastServiceProvider:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">namespace App\Providers;</span><br><span class="line"></span><br><span class="line">use Illuminate\Support\ServiceProvider;</span><br><span class="line">use Illuminate\Support\Facades\Broadcast;</span><br><span class="line"></span><br><span class="line">class BroadcastServiceProvider extends ServiceProvider</span><br><span class="line">&#123;</span><br><span class="line">    /**</span><br><span class="line">     * Bootstrap any application services.</span><br><span class="line">     *</span><br><span class="line">     * @return void</span><br><span class="line">     */</span><br><span class="line">    public function boot()</span><br><span class="line">    &#123;</span><br><span class="line">        //Broadcast::routes();</span><br><span class="line">        Broadcast::routes([&apos;middleware&apos; =&gt; &apos;api&apos;]);</span><br><span class="line">        #routes()参数如果不配置 默认走的是web中间件</span><br><span class="line">        #&apos;middleware&apos; =&gt; &apos;api&apos; 然后广播路由走api中间件，自己也可以定义其他类型的中间件</span><br><span class="line"></span><br><span class="line">        require base_path(&apos;routes/channels.php&apos;); #加载检查权限的广播路由</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>routes/channels：#广播路由只针对广播的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">|--------------------------------------------------------------------------</span><br><span class="line">| Broadcast Channels</span><br><span class="line">|--------------------------------------------------------------------------</span><br><span class="line">|</span><br><span class="line">| Here you may register all of the event broadcasting channels that your</span><br><span class="line">| application supports. The given channel authorization callbacks are</span><br><span class="line">| used to check if an authenticated user can listen to the channel.</span><br><span class="line">|</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">//占位符模式</span><br><span class="line">\Illuminate\Support\Facades\Broadcast::channel(&apos;user.&#123;userId&#125;&apos;, function ($user, $userId) &#123;</span><br><span class="line">    return true;</span><br><span class="line">&#125;, [&apos;guards&apos; =&gt; [&apos;api&apos;]]);</span><br><span class="line"></span><br><span class="line">#&#123;userId&#125;只是占位符</span><br><span class="line">#$user 闭包默认的第一个参数，授权的用户</span><br><span class="line">#$userId 时间模板的公有属性(此时该值为3590即在PrivateEvent构造函数上所赋的值)，也可以是其他的对象</span><br><span class="line">#闭包函数接受多个参数，这个参数由事件里的broadcastOn函数声明的频道决定,如：&apos;user.&apos; . $this-&gt;userId . $this-&gt;userName 那么就可以接受2个参数userId和userName</span><br><span class="line"></span><br><span class="line">//显式的路由模型绑定</span><br><span class="line">\Illuminate\Support\Facades\Broadcast::channel(&apos;user.&#123;user2&#125;&apos;, function ($user, \App\Models\UserModel $user2) &#123;</span><br><span class="line">    \Illuminate\Support\Facades\Log::info($user);</span><br><span class="line">    return true;</span><br><span class="line">&#125;, [&apos;guards&apos; =&gt; [&apos;api&apos;]]);</span><br><span class="line"># 注意这里的占位符&#123;user2&#125; 必须 \App\Models\UserModel $user2  这个变量名一样。否则会报错</span><br></pre></td></tr></table></figure></p>
+<p>前端代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">import Echo from &apos;laravel-echo&apos;</span><br><span class="line"></span><br><span class="line">window.io = require(&apos;socket.io-client&apos;);</span><br><span class="line">window.Echo = new Echo(&#123;</span><br><span class="line">    broadcaster: &apos;socket.io&apos;,</span><br><span class="line">    host: window.location.hostname + &apos;:6001&apos;,</span><br><span class="line">    auth: &#123;</span><br><span class="line">         headers: &#123;</span><br><span class="line">             Authorization: &apos;Bearer &apos; + &apos;WVP25lQfJFTpCcuA1rmdadgeXQplMOtobWjL4TvkDD8dMbjOX5pBF4kBwiC9&apos;</span><br><span class="line">         &#125;,</span><br><span class="line">     &#125;,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">window.Echo.private(&apos;user.3590&apos;)</span><br><span class="line">    .listen(&apos;PrivateEvent&apos;, (e) =&gt; &#123; </span><br><span class="line">            alert(11);</span><br><span class="line">           console.log(1111);</span><br><span class="line">        console.log(e);</span><br><span class="line">    &#125;);</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">#user.3590 监听的频道</span><br><span class="line">#PrivateEvent 监听的事件</span><br><span class="line">#Authorization 授权，后端会检测如果不对会报错403</span><br></pre></td></tr></table></figure></p>
+<p>页面展示：不出意外会把公有属性全部展示出来，其他的属性不会展示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">user: &#123;…&#125;, userId: 3590, socket: null&#125;</span><br><span class="line">socket: null</span><br><span class="line">user: &#123;u_id: 3590, u_username: &quot;02125&quot;, u_job_number: &quot;&quot;, u_warehouse_id: 1, u_department_id: 0, …&#125;</span><br><span class="line">userId: 3590</span><br><span class="line">__proto__: Object</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>参考：<br><a href="https://xueyuanjun.com/post/19505" target="_blank" rel="noopener">https://xueyuanjun.com/post/19505</a><br><a href="http://silverd.cn/2018/06/01/laravel-broadcasting-adv.html" target="_blank" rel="noopener">http://silverd.cn/2018/06/01/laravel-broadcasting-adv.html</a></p>
+
+          
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2020/04/01/redis删除key的几种方式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -930,308 +1201,6 @@
   </article>
 
     
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/09/24/字符串反转算法/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="LYP">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="不知名的程序员">
-    </span>
-      <header class="post-header">
-
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/09/24/字符串反转算法/" class="post-title-link" itemprop="url">字符串反转算法</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-09-24 10:37:38 / 修改时间：10:38:46" itemprop="dateCreated datePublished" datetime="2019-09-24T10:37:38+08:00">2019-09-24</time>
-            </span>
-          
-            
-
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据与结构/" itemprop="url" rel="index"><span itemprop="name">数据与结构</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          <br>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-            <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$a = &apos;123abc123abc&apos;;</span><br><span class="line"></span><br><span class="line">$aLen   = strlen($a);</span><br><span class="line"></span><br><span class="line">$revLen = floor($aLen / 2);</span><br><span class="line"></span><br><span class="line">for ($i = 0; $i &lt; $revLen; $i++) &#123;</span><br><span class="line">    $temp         = $a[$i];</span><br><span class="line">    $a[$i]        = $a[$aLen - 1 - $i];</span><br><span class="line">    $a[$aLen - 1] = $temp;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">echo $a;  //cba321123abc</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/09/24/字符串朴素的模式匹配算法/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="LYP">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="不知名的程序员">
-    </span>
-      <header class="post-header">
-
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/09/24/字符串朴素的模式匹配算法/" class="post-title-link" itemprop="url">字符串朴素的模式匹配算法</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-09-24 10:16:24 / 修改时间：10:17:23" itemprop="dateCreated datePublished" datetime="2019-09-24T10:16:24+08:00">2019-09-24</time>
-            </span>
-          
-            
-
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据与结构/" itemprop="url" rel="index"><span itemprop="name">数据与结构</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          <br>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-            <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$a = &apos;123abc123abc&apos;;</span><br><span class="line">$b = &apos;123&apos;;</span><br><span class="line"></span><br><span class="line">$aLen = strlen($a);</span><br><span class="line">$bLen = strlen($b);</span><br><span class="line">for ($i = 0; $i &lt; $aLen; $i++) &#123;</span><br><span class="line">    for ($j = 0; $j &lt; $bLen; $j++) &#123;</span><br><span class="line">        if ($b[$j] != $a[$i + $j]) &#123;  //a和b只要有一位不相同，a则从匹配到下一位继续开始匹配。</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    if ($j == $bLen) &#123;</span><br><span class="line">        echo &apos;ok&apos;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/09/19/PostMan工具之tests项设置/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="LYP">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="不知名的程序员">
-    </span>
-      <header class="post-header">
-
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/09/19/PostMan工具之tests项设置/" class="post-title-link" itemprop="url">PostMan工具之tests项设置</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-09-19 14:42:07 / 修改时间：14:43:18" itemprop="dateCreated datePublished" datetime="2019-09-19T14:42:07+08:00">2019-09-19</time>
-            </span>
-          
-            
-
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/PostMan/" itemprop="url" rel="index"><span itemprop="name">PostMan</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          <br>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-            <p>1，获取API返回参数：<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var jsonData =JSON.parse(responseBody);//获取body中返回的所有参数</span><br></pre></td></tr></table></figure></p>
-<p>2，设置全局变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">postman.setGlobalVariable(&quot;Auth&quot;,jsonData.data.authToken);//把返回参数中的keys设置为环境变量</span><br></pre></td></tr></table></figure></p>
-<p>4，获取全局变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">postman.getGlobalVariable(&quot;Auth&quot;);</span><br></pre></td></tr></table></figure></p>
-<p>4，设置环境变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">postman.setEnvironmentVariable(&quot;key&quot;, &quot;value&quot;);</span><br></pre></td></tr></table></figure></p>
-<p>5，获取环境变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">postman.getEnvironmentVariable(&quot;key&quot;);</span><br></pre></td></tr></table></figure></p>
-<p>6，获取URL请求的cookie，并且设置到环境变量里<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pm.environment.set(</span><br><span class="line">    &quot;XSRF-TOKEN&quot;, </span><br><span class="line">    decodeURIComponent(pm.cookies.get(&quot;XSRF-TOKEN&quot;))</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </section>
 
   
@@ -1269,7 +1238,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
