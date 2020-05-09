@@ -58,15 +58,16 @@
 </script>
 
   <meta name="description" content="#背景：    最近需要做个服务端消息推送的事情，首先就考虑到了Laravel自带的广播功能，它是利用redis的发布订阅功能和前端利用node.js实现的一套集合了Websocket 的功能 前置条件：后端：1234567891，安装redis扩展      composer require predis/predis2，在config/app.php中打开注释：      App\Provid">
+<meta name="keywords" content="Laravel">
 <meta property="og:type" content="article">
-<meta property="og:title" content="不知名的程序员">
+<meta property="og:title" content="Laravel+vue广播">
 <meta property="og:url" content="https://leiyuanpu.github.io/2020/05/09/Laravel+vue广播实战/index.html">
 <meta property="og:site_name" content="不知名的程序员">
 <meta property="og:description" content="#背景：    最近需要做个服务端消息推送的事情，首先就考虑到了Laravel自带的广播功能，它是利用redis的发布订阅功能和前端利用node.js实现的一套集合了Websocket 的功能 前置条件：后端：1234567891，安装redis扩展      composer require predis/predis2，在config/app.php中打开注释：      App\Provid">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-05-09T06:58:22.548Z">
+<meta property="og:updated_time" content="2020-05-09T07:05:04.719Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="不知名的程序员">
+<meta name="twitter:title" content="Laravel+vue广播">
 <meta name="twitter:description" content="#背景：    最近需要做个服务端消息推送的事情，首先就考虑到了Laravel自带的广播功能，它是利用redis的发布订阅功能和前端利用node.js实现的一套集合了Websocket 的功能 前置条件：后端：1234567891，安装redis扩展      composer require predis/predis2，在config/app.php中打开注释：      App\Provid">
   <link rel="canonical" href="https://leiyuanpu.github.io/2020/05/09/Laravel+vue广播实战/">
 
@@ -77,7 +78,7 @@
   };
 </script>
 
-  <title> | 不知名的程序员</title>
+  <title>Laravel+vue广播 | 不知名的程序员</title>
   
 
 
@@ -239,7 +240,7 @@
       <header class="post-header">
 
         
-          <h1 class="post-title" itemprop="name headline">
+          <h1 class="post-title" itemprop="name headline">Laravel+vue广播
 
               
             
@@ -259,7 +260,26 @@
                 
               
 
-              <time title="创建时间：2020-05-09 14:58:22" itemprop="dateCreated datePublished" datetime="2020-05-09T14:58:22+08:00">2020-05-09</time>
+              <time title="创建时间：2020-05-09 14:37:06 / 修改时间：15:05:04" itemprop="dateCreated datePublished" datetime="2020-05-09T14:37:06+08:00">2020-05-09</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Laravel/" itemprop="url" rel="index"><span itemprop="name">Laravel</span></a></span>
+
+                
+                
+              
             </span>
           
 
@@ -295,10 +315,16 @@
     
 
     <footer class="post-footer">
+          
+        
+        <div class="post-tags">
+            <a href="/tags/Laravel/" rel="tag"># Laravel</a>
+          
+        </div>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
-              <a href="/2020/04/01/redis删除key的几种方式/" rel="next" title="redis删除key的几种方式">
-                <i class="fa fa-chevron-left"></i> redis删除key的几种方式
+              <a href="/2020/04/27/MySQL获取分组后的TOP1和TOPN记录/" rel="next" title="Mysql获取Top N和Top 1的问题">
+                <i class="fa fa-chevron-left"></i> Mysql获取Top N和Top 1的问题
               </a>
             
           </div>
@@ -306,10 +332,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-              <a href="/2020/05/09/MySQL获取分组后的TOP1和TOPN记录/" rel="prev" title>
-                 <i class="fa fa-chevron-right"></i>
-              </a>
-            
           </div>
         </div>
     </footer>
@@ -387,7 +409,9 @@
         
           
         
-        <span class="site-state-item-count">10</span>
+          
+        
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>
@@ -424,7 +448,9 @@
         
           
         
-        <span class="site-state-item-count">11</span>
+          
+        
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>

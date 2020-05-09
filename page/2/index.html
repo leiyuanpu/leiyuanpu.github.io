@@ -220,7 +220,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/09/24/字符串反转算法/">
+    <link itemprop="mainEntityOfPage" href="https://leiyuanpu.github.io/2019/09/24/update信息不能包含子查询的信息/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LYP">
@@ -237,7 +237,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/09/24/字符串反转算法/" class="post-title-link" itemprop="url">字符串反转算法</a>
+                <a href="/2019/09/24/update信息不能包含子查询的信息/" class="post-title-link" itemprop="url">You can't specify target table for update in FROM clause</a>
               
             
           </h1>
@@ -256,11 +256,21 @@
                 
               
 
-              <time title="创建时间：2019-09-24 10:37:38 / 修改时间：10:38:46" itemprop="dateCreated datePublished" datetime="2019-09-24T10:37:38+08:00">2019-09-24</time>
+              <time title="创建时间：2019-09-24 10:37:38" itemprop="dateCreated datePublished" datetime="2019-09-24T10:37:38+08:00">2019-09-24</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-04-02 15:25:25" itemprop="dateModified" datetime="2020-04-02T15:25:25+08:00">2020-04-02</time>
+              </span>
             
           
             <span class="post-meta-item">
@@ -271,7 +281,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据与结构/" itemprop="url" rel="index"><span itemprop="name">数据与结构</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Mysql/" itemprop="url" rel="index"><span itemprop="name">Mysql</span></a></span>
 
                 
                 
@@ -291,7 +301,7 @@
 
       
           
-            <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$a = &apos;123abc123abc&apos;;</span><br><span class="line"></span><br><span class="line">$aLen   = strlen($a);</span><br><span class="line"></span><br><span class="line">$revLen = floor($aLen / 2);</span><br><span class="line"></span><br><span class="line">for ($i = 0; $i &lt; $revLen; $i++) &#123;</span><br><span class="line">    $temp         = $a[$i];</span><br><span class="line">    $a[$i]        = $a[$aLen - 1 - $i];</span><br><span class="line">    $a[$aLen - 1] = $temp;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">echo $a;  //cba321123abc</span><br></pre></td></tr></table></figure>
+            <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">今天通过命令行想删除一些重复的数据结果执行命令的时候报错了：</span><br><span class="line">执行的命令：</span><br><span class="line">DELETE FROM cms_mail where m_create_time &lt; 1585801800 </span><br><span class="line">and  m_mail_uid in (select m_mail_uid from cms_mail </span><br><span class="line">group by m_to_email, m_mail_uid having count(m_mail_uid)&gt; 1)</span><br><span class="line"></span><br><span class="line">结果：</span><br><span class="line">You can&apos;t specify target table for update in FROM clause</span><br><span class="line"></span><br><span class="line">解决方案：</span><br><span class="line">DELETE FROM cms_mail where m_create_time &lt; 1585801800 </span><br><span class="line">and  m_mail_uid in (</span><br><span class="line">select m_mail_uid from ( select m_mail_uid from cms_mail group by m_to_email, m_mail_uid having  count(m_mail_uid)&gt; 1) as a</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">原因是mysql不支持你修改的值包含子查询的内容。把子查询语句变成一个临时表来处理就ok了</span><br></pre></td></tr></table></figure>
 
           
         
@@ -1516,7 +1526,9 @@ index  index.html index.htm index.php;
         
           
         
-        <span class="site-state-item-count">10</span>
+          
+        
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>
@@ -1553,7 +1565,9 @@ index  index.html index.htm index.php;
         
           
         
-        <span class="site-state-item-count">11</span>
+          
+        
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
