@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Nginx跨域配置]]></title>
+    <url>%2F2020%2F07%2F26%2FNginx%E8%B7%A8%E5%9F%9F%E9%85%8D%E7%BD%AE%2F</url>
+    <content type="text"><![CDATA[123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384erver &#123; listen 81 default_server; listen [::]:81 default_server; server_name _; #root /home/crm_ui_test/dist; access_log /home/nginx/log/crm_ui_dev_access.log main; # Load configuration files for the default server block. #include /etc/nginx/default.d/*.conf; location / &#123; root /home/crm_ui_dev/dist; try_files $uri $uri/ /index.html; index index.html index.htm; &#125; location /server &#123; proxy_set_header Host $host; proxy_set_header X-Real-IP $remote_addr; #»ñÈ¡ÕæÊµip proxy_connect_timeout 90; proxy_send_timeout 90; proxy_read_timeout 90; proxy_buffer_size 4k; proxy_buffers 4 32k; proxy_busy_buffers_size 64k; proxy_temp_file_write_size 64k; proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;#»ñÈ¡´úÀíÕßµÄÕæÊµip proxy_redirect off; proxy_pass http://127.0.0.1:85/;&#125;&#125; server_name localhost; root /home/crm_server_dev/public;# add_header X-Frame-Options &quot;SAMEORIGIN&quot;;# add_header X-XSS-Protection &quot;1; mode=block&quot;;# add_header X-Content-Type-Options &quot;nosniff&quot;; index index.html index.htm index.php; charset utf-8; fastcgi_read_timeout 1000; access_log /home/nginx/log/crm_server_dev_access.log main; location / &#123; try_files $uri $uri/ /index.php?$query_string; &#125; location = /favicon.ico &#123; access_log off; log_not_found off; &#125; location = /robots.txt &#123; access_log off; log_not_found off; &#125; error_page 404 /index.php; location ~ \.php$ &#123; if ($request_method = &apos;OPTIONS&apos;) &#123; add_header &apos;Access-Control-Allow-Origin&apos; &apos;*&apos; always; add_header &apos;Access-Control-Allow-Credentials&apos; &apos;true&apos;; add_header &apos;Access-Control-Allow-Methods&apos; &apos;GET, POST, PATCH, DELETE, PUT, OPTIONS&apos;; add_header &apos;Access-Control-Allow-Headers&apos; &apos;DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type, Access-Control-Expose-Headers, Token, Authorization&apos;; add_header &apos;Access-Control-Max-Age&apos; 1728000; add_header &apos;Content-Type&apos; &apos;text/plain charset=UTF-8&apos;; add_header &apos;Content-Length&apos; 0; return 204; &#125; add_header &apos;Access-Control-Allow-Origin&apos; &apos;*&apos; always; root /home/crm_server_dev/public; fastcgi_pass 127.0.0.1:9000; fastcgi_index index.php; fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name; include fastcgi_params; &#125; location ~ /\.(?!well-known).* &#123; deny all; &#125;&#125; `]]></content>
+      <categories>
+        <category>Nginx</category>
+      </categories>
+      <tags>
+        <tag>Nginx</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Nginx报 upstream timed out 10060]]></title>
     <url>%2F2020%2F05%2F17%2FNginx%E6%8A%A510060%2F</url>
     <content type="text"><![CDATA[~~~ 由于系统执行一个时间比较长的接口ngxin抛出下面的错误 12 upstream timed out (10060: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond) while reading response header from upstream` 解决方法：1，修改fastcgi_read_timeout的参数值，系统默认60秒；2，fastcgi_read_timeout指定nginx接受后端fastcgi响应请求超时时间 （指已完成两次握手后nginx接受fastcgi响应请求超时时间）12345678910 location ~ \.php(.*)$ &#123; fastcgi_pass 127.0.0.1:9000; fastcgi_index index.php; fastcgi_split_path_info ^((?U).+\.php)(/?.+)$; fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name; fastcgi_param PATH_INFO $fastcgi_path_info; fastcgi_param PATH_TRANSLATED $document_root$fastcgi_path_info;fastcgi_read_timeout 600; include fastcgi_params; &#125;]]></content>
@@ -111,17 +122,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[You can't specify target table for update in FROM clause]]></title>
-    <url>%2F2019%2F09%2F24%2Fupdate%E4%BF%A1%E6%81%AF%E4%B8%8D%E8%83%BD%E5%8C%85%E5%90%AB%E5%AD%90%E6%9F%A5%E8%AF%A2%E7%9A%84%E4%BF%A1%E6%81%AF%2F</url>
-    <content type="text"><![CDATA[12345678910111213141516今天通过命令行想删除一些重复的数据结果执行命令的时候报错了：执行的命令：DELETE FROM cms_mail where m_create_time &lt; 1585801800 and m_mail_uid in (select m_mail_uid from cms_mail group by m_to_email, m_mail_uid having count(m_mail_uid)&gt; 1)结果：You can&apos;t specify target table for update in FROM clause解决方案：DELETE FROM cms_mail where m_create_time &lt; 1585801800 and m_mail_uid in (select m_mail_uid from ( select m_mail_uid from cms_mail group by m_to_email, m_mail_uid having count(m_mail_uid)&gt; 1) as a)原因是mysql不支持你修改的值包含子查询的内容。把子查询语句变成一个临时表来处理就ok了]]></content>
-      <categories>
-        <category>Mysql</category>
-      </categories>
-      <tags>
-        <tag>Mysql</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[字符串反转算法]]></title>
     <url>%2F2019%2F09%2F24%2F%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8F%8D%E8%BD%AC%E7%AE%97%E6%B3%95%2F</url>
     <content type="text"><![CDATA[12345678910111213141516&lt;?php$a = &apos;123abc123abc&apos;;$aLen = strlen($a);$revLen = floor($aLen / 2);for ($i = 0; $i &lt; $revLen; $i++) &#123; $temp = $a[$i]; $a[$i] = $a[$aLen - 1 - $i]; $a[$aLen - 1] = $temp;&#125;echo $a; //cba321123abc]]></content>
@@ -130,6 +130,17 @@
       </categories>
       <tags>
         <tag>数据与结构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[You can't specify target table for update in FROM clause]]></title>
+    <url>%2F2019%2F09%2F24%2Fupdate%E4%BF%A1%E6%81%AF%E4%B8%8D%E8%83%BD%E5%8C%85%E5%90%AB%E5%AD%90%E6%9F%A5%E8%AF%A2%E7%9A%84%E4%BF%A1%E6%81%AF%2F</url>
+    <content type="text"><![CDATA[12345678910111213141516今天通过命令行想删除一些重复的数据结果执行命令的时候报错了：执行的命令：DELETE FROM cms_mail where m_create_time &lt; 1585801800 and m_mail_uid in (select m_mail_uid from cms_mail group by m_to_email, m_mail_uid having count(m_mail_uid)&gt; 1)结果：You can&apos;t specify target table for update in FROM clause解决方案：DELETE FROM cms_mail where m_create_time &lt; 1585801800 and m_mail_uid in (select m_mail_uid from ( select m_mail_uid from cms_mail group by m_to_email, m_mail_uid having count(m_mail_uid)&gt; 1) as a)原因是mysql不支持你修改的值包含子查询的内容。把子查询语句变成一个临时表来处理就ok了]]></content>
+      <categories>
+        <category>Mysql</category>
+      </categories>
+      <tags>
+        <tag>Mysql</tag>
       </tags>
   </entry>
   <entry>
